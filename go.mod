@@ -1,6 +1,6 @@
 module github.com/PatrickLaabs/eros
 
-go 1.23.0
+go 1.23.1
 
 require (
 	github.com/a-h/templ v0.2.778
@@ -12,7 +12,6 @@ require (
 	github.com/BurntSushi/toml v1.4.0 // indirect
 	github.com/alessio/shellescape v1.4.2 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.0 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/safetext v0.0.0-20240722112252-5a72de7e7962 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect

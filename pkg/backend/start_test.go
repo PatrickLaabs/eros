@@ -5,6 +5,7 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package backend
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/PatrickLaabs/eros/pkg/backend/routes"
 	"net/http"
@@ -19,7 +20,15 @@ func TestServer(t *testing.T) {
 
 		routes.Version(response, request)
 
-		assertResponseBody(t, response.Body.String(), "0.1.0")
+		// Decode the response body
+		var decodedJson string
+		//err := json.NewDecoder(response.Body).Decode(&decodedJson)
+		err := json.NewDecoder(response.Body).Decode(&decodedJson)
+		if err != nil {
+			t.Errorf("failed to decode json: %v", err)
+		}
+
+		assertResponseBody(t, decodedJson, "0.1.0")
 	})
 	t.Run("runs kubernetes endpoint using local flavor", func(t *testing.T) {
 		request := kubernetesFlavorRequest("local")

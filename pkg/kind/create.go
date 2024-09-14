@@ -14,7 +14,7 @@ func Create() {
 
 	if err := p.Create(
 		"test",
-		kind.CreateWithConfigFile("./kind-config.yaml"),
+		kind.CreateWithConfigFile("../../kind-config.yaml"),
 	); err != nil {
 		fmt.Printf("error creating kind cluster: %v", err)
 	}

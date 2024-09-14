@@ -19,7 +19,7 @@ cover:
 cover-html:
     @echo "Creating coverage files and coverage.html"
     {{GO_CMD}} test ./... --coverprofile=./coverage/coverage.out
-    {{GO_CMD}} tool cover -html=./coverage/coverage.out -o ./coverage/coverage.html
+    {{GO_CMD}} tool cover -html=./coverage/coverage.out -o ./docs/coverage.html
 
 bench:
     @echo "Running benchmarks.."
