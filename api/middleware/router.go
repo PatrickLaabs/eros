@@ -5,7 +5,7 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package middleware
 
 import (
-	"github.com/PatrickLaabs/eros/pkg/backend/routes"
+	"github.com/PatrickLaabs/eros/api/routes"
 	"net/http"
 )
 

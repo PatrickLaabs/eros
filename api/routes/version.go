@@ -6,9 +6,12 @@ package routes
 
 import (
 	"encoding/json"
+	_ "github.com/PatrickLaabs/eros/docs"
 	"log"
 	"net/http"
 )
+
+// @description Version Endpoint to return the current version of the API of the eros platform
 
 // Version returns the current version of the API Server
 func Version(w http.ResponseWriter, r *http.Request) {

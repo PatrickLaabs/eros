@@ -19,7 +19,7 @@ cover:
 cover-html:
     @echo "Creating coverage files and coverage.html"
     {{GO_CMD}} test ./... --coverprofile=./coverage/coverage.out
-    {{GO_CMD}} tool cover -html=./coverage/coverage.out -o ./docs/coverage.html
+    {{GO_CMD}} tool cover -html=./coverage/coverage.out -o ./coverage/coverage.html
 
 bench:
     @echo "Running benchmarks.."
@@ -37,4 +37,8 @@ lint:
 
 gen:
     @echo "Generating templ files..."
-    {{TEMPL_CMD}} generate views
+    {{TEMPL_CMD}} generate ./frontend/views
+
+swagger:
+    @echo "Generating API documentation..."
+    swag init -g ./api/start.go -o ./docs

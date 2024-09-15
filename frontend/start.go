@@ -6,8 +6,9 @@ package frontend
 
 import (
 	"flag"
-	"github.com/PatrickLaabs/eros/views"
+	"github.com/PatrickLaabs/eros/frontend/views"
 	"github.com/a-h/templ"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 )
@@ -26,8 +27,9 @@ var (
 func Start() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-
 	http.Handle("/", templ.Handler(views.LandingPage()))
+
+	httpSwagger.Handler()
 
 	log.Printf("starting frontend on port %v", *frontendAddr)
 	log.Fatal(http.ListenAndServe(*frontendAddr, nil))

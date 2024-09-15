@@ -2,12 +2,12 @@
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package backend
+package api
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/PatrickLaabs/eros/pkg/backend/routes"
+	"github.com/PatrickLaabs/eros/api/routes"
 	"net/http"
 	"net/http/httptest"
 	"testing"

@@ -1,0 +1,16 @@
+basePath: /v2
+host: github.com/PatrickLaabs/eros
+info:
+  contact:
+    email: patrick.laabs@me.com
+    name: Patrick Laabs
+    url: http://www.swagger.io/support
+  description: API Backend for the eros platform.
+  license:
+    name: GNU GENERAL PUBLIC LICENSE
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths: {}
+swagger: "2.0"

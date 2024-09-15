@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>backendserver: Go Coverage Report</title>
+		<title>middleware: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -55,45 +55,47 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/PatrickLaabs/eros/cmd/backendserver/server.go (0.0%)</option>
+				<option value="file0">github.com/PatrickLaabs/eros/api/middleware/router.go (0.0%)</option>
 				
-				<option value="file1">github.com/PatrickLaabs/eros/cmd/backendserver/start.go (0.0%)</option>
+				<option value="file1">github.com/PatrickLaabs/eros/api/routes/kubernetes.go (50.0%)</option>
 				
-				<option value="file2">github.com/PatrickLaabs/eros/cmd/backendserver/stop.go (0.0%)</option>
+				<option value="file2">github.com/PatrickLaabs/eros/api/routes/registerroutes.go (0.0%)</option>
 				
-				<option value="file3">github.com/PatrickLaabs/eros/cmd/frontendserver/server.go (0.0%)</option>
+				<option value="file3">github.com/PatrickLaabs/eros/api/routes/version.go (75.0%)</option>
 				
-				<option value="file4">github.com/PatrickLaabs/eros/cmd/frontendserver/start.go (0.0%)</option>
+				<option value="file4">github.com/PatrickLaabs/eros/api/start.go (0.0%)</option>
 				
-				<option value="file5">github.com/PatrickLaabs/eros/cmd/frontendserver/stop.go (0.0%)</option>
+				<option value="file5">github.com/PatrickLaabs/eros/cmd/backendserver/server.go (0.0%)</option>
 				
-				<option value="file6">github.com/PatrickLaabs/eros/cmd/root.go (0.0%)</option>
+				<option value="file6">github.com/PatrickLaabs/eros/cmd/backendserver/start.go (0.0%)</option>
 				
-				<option value="file7">github.com/PatrickLaabs/eros/main.go (0.0%)</option>
+				<option value="file7">github.com/PatrickLaabs/eros/cmd/backendserver/stop.go (0.0%)</option>
 				
-				<option value="file8">github.com/PatrickLaabs/eros/pkg/backend/middleware/router.go (0.0%)</option>
+				<option value="file8">github.com/PatrickLaabs/eros/cmd/frontendserver/server.go (0.0%)</option>
 				
-				<option value="file9">github.com/PatrickLaabs/eros/pkg/backend/routes/kubernetes.go (50.0%)</option>
+				<option value="file9">github.com/PatrickLaabs/eros/cmd/frontendserver/start.go (0.0%)</option>
 				
-				<option value="file10">github.com/PatrickLaabs/eros/pkg/backend/routes/registerroutes.go (0.0%)</option>
+				<option value="file10">github.com/PatrickLaabs/eros/cmd/frontendserver/stop.go (0.0%)</option>
 				
-				<option value="file11">github.com/PatrickLaabs/eros/pkg/backend/routes/version.go (75.0%)</option>
+				<option value="file11">github.com/PatrickLaabs/eros/cmd/root.go (0.0%)</option>
 				
-				<option value="file12">github.com/PatrickLaabs/eros/pkg/backend/start.go (0.0%)</option>
+				<option value="file12">github.com/PatrickLaabs/eros/docs/docs.go (100.0%)</option>
 				
-				<option value="file13">github.com/PatrickLaabs/eros/pkg/frontend/start.go (0.0%)</option>
+				<option value="file13">github.com/PatrickLaabs/eros/frontend/start.go (0.0%)</option>
 				
-				<option value="file14">github.com/PatrickLaabs/eros/pkg/kind/create.go (100.0%)</option>
+				<option value="file14">github.com/PatrickLaabs/eros/frontend/views/footer_templ.go (0.0%)</option>
 				
-				<option value="file15">github.com/PatrickLaabs/eros/pkg/kind/delete.go (0.0%)</option>
+				<option value="file15">github.com/PatrickLaabs/eros/frontend/views/header_templ.go (0.0%)</option>
 				
-				<option value="file16">github.com/PatrickLaabs/eros/pkg/preflight/checks.go (0.0%)</option>
+				<option value="file16">github.com/PatrickLaabs/eros/frontend/views/landing_templ.go (0.0%)</option>
 				
-				<option value="file17">github.com/PatrickLaabs/eros/views/footer_templ.go (0.0%)</option>
+				<option value="file17">github.com/PatrickLaabs/eros/main.go (0.0%)</option>
 				
-				<option value="file18">github.com/PatrickLaabs/eros/views/header_templ.go (0.0%)</option>
+				<option value="file18">github.com/PatrickLaabs/eros/pkg/kind/create.go (100.0%)</option>
 				
-				<option value="file19">github.com/PatrickLaabs/eros/views/landing_templ.go (0.0%)</option>
+				<option value="file19">github.com/PatrickLaabs/eros/pkg/kind/delete.go (0.0%)</option>
+				
+				<option value="file20">github.com/PatrickLaabs/eros/pkg/preflight/checks.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -111,218 +113,10 @@
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package backendserver
-
-import (
-        "fmt"
-        "github.com/spf13/cobra"
-)
-
-// ServerCmd represents the server command
-var ServerCmd = &amp;cobra.Command{
-        Use:   "server",
-        Short: "Runs eros on your bastion node",
-        Long: `Runs eros on your bastion node` +
-                `and will take care of your management cluster using Cluster-API`,
-        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
-                fmt.Println("server called")
-        }</span>,
-}
-
-func init() <span class="cov0" title="0">{
-        ServerCmd.AddCommand(startCmd)
-        ServerCmd.AddCommand(stopCmd)
-}</span>
-</pre>
-		
-		<pre class="file" id="file1" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package backendserver
-
-import (
-        "fmt"
-        "github.com/PatrickLaabs/eros/pkg/backend"
-        "github.com/spf13/cobra"
-)
-
-// startCmd represents the server command
-var startCmd = &amp;cobra.Command{
-        Use:   "start",
-        Short: "Runs eros on your bastion node",
-        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
-
-                /* ToDos:
-                1. Set up Kind
-                */
-
-                //kind.Create()
-                fmt.Println("server-backend start called")
-                backend.Start()
-        }</span>,
-}
-
-//func init() {
-//        serverCmd.AddCommand(startCmd)
-//}
-</pre>
-		
-		<pre class="file" id="file2" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package backendserver
-
-import (
-        "fmt"
-        "github.com/spf13/cobra"
-)
-
-// stopCmd represents the server command
-var stopCmd = &amp;cobra.Command{
-        Use:   "stop",
-        Short: "Runs eros on your bastion node",
-        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
-
-                /* ToDos:
-                1. Set up Kind
-                */
-
-                //kind.Create()
-                fmt.Println("server stop called")
-        }</span>,
-}
-
-//func init() {
-//        serverCmd.AddCommand(startCmd)
-//}
-</pre>
-		
-		<pre class="file" id="file3" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package frontendserver
-
-import (
-        "fmt"
-        "github.com/spf13/cobra"
-)
-
-// FrontendCmd represents the server command
-var FrontendCmd = &amp;cobra.Command{
-        Use:   "frontend",
-        Short: "Runs eros on your bastion node",
-        Long: `Runs eros on your bastion node` +
-                `and will take care of your management cluster using Cluster-API`,
-        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
-                fmt.Println("server called")
-        }</span>,
-}
-
-func init() <span class="cov0" title="0">{
-        FrontendCmd.AddCommand(startCmd)
-        FrontendCmd.AddCommand(stopCmd)
-}</span>
-</pre>
-		
-		<pre class="file" id="file4" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package frontendserver
-
-import (
-        "github.com/PatrickLaabs/eros/pkg/frontend"
-        "github.com/spf13/cobra"
-)
-
-// startCmd represents the server command
-var startCmd = &amp;cobra.Command{
-        Use:   "start",
-        Short: "Runs eros on your bastion node",
-        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
-                frontend.Start()
-        }</span>,
-}
-</pre>
-		
-		<pre class="file" id="file5" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package frontendserver
-
-import (
-        "github.com/spf13/cobra"
-)
-
-// stopCmd represents the server command
-var stopCmd = &amp;cobra.Command{
-        Use:   "stop",
-        Short: "Runs eros on your bastion node",
-        Run: func(cmd *cobra.Command, args []string) {<span class="cov0" title="0">
-                //frontend.Stop()
-        }</span>,
-}
-</pre>
-		
-		<pre class="file" id="file6" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package cmd
-
-import (
-        "github.com/PatrickLaabs/eros/cmd/backendserver"
-        "github.com/PatrickLaabs/eros/cmd/frontendserver"
-        "github.com/spf13/cobra"
-        "os"
-)
-
-// RootCmd represents the base command when called without any subcommands
-var rootCmd = &amp;cobra.Command{
-        Use:   "eros",
-        Short: "Run Kubernetes in no-time with GitOps onboard",
-}
-
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() <span class="cov0" title="0">{
-        err := rootCmd.Execute()
-        if err != nil </span><span class="cov0" title="0">{
-                os.Exit(1)
-        }</span>
-}
-
-func init() <span class="cov0" title="0">{
-        rootCmd.AddCommand(backendserver.ServerCmd)
-        rootCmd.AddCommand(frontendserver.FrontendCmd)
-}</span>
-</pre>
-		
-		<pre class="file" id="file7" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package main
-
-import "github.com/PatrickLaabs/eros/cmd"
-
-func main() <span class="cov0" title="0">{
-        cmd.Execute()
-}</span>
-</pre>
-		
-		<pre class="file" id="file8" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
 package middleware
 
 import (
-        "github.com/PatrickLaabs/eros/pkg/backend/routes"
+        "github.com/PatrickLaabs/eros/api/routes"
         "net/http"
 )
 
@@ -349,7 +143,7 @@ func Router(next http.Handler) http.Handler <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">/*
+		<pre class="file" id="file1" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
@@ -391,7 +185,7 @@ func Kubernetes(w http.ResponseWriter, r *http.Request) <span class="cov8" title
 }
 </pre>
 		
-		<pre class="file" id="file10" style="display: none">/*
+		<pre class="file" id="file2" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
@@ -406,10 +200,6 @@ var routeMap = map[string]http.HandlerFunc{
         "/kubernetes/": Kubernetes,
 }
 
-//component := hello("John")
-//
-//        http.Handle("/", templ.Handler(component))
-
 // RegisterRoutes registers all routes with the HTTP server
 func RegisterRoutes(mux *http.ServeMux) <span class="cov0" title="0">{
         for path, handler := range routeMap </span><span class="cov0" title="0">{
@@ -418,7 +208,7 @@ func RegisterRoutes(mux *http.ServeMux) <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">/*
+		<pre class="file" id="file3" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
@@ -426,9 +216,12 @@ package routes
 
 import (
         "encoding/json"
+        _ "github.com/PatrickLaabs/eros/docs"
         "log"
         "net/http"
 )
+
+// @description Version Endpoint to return the current version of the API of the eros platform
 
 // Version returns the current version of the API Server
 func Version(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
@@ -440,24 +233,36 @@ func Version(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1
 }
 </pre>
 		
-		<pre class="file" id="file12" style="display: none">/*
+		<pre class="file" id="file4" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package backend
+package api
 
 import (
         "flag"
-        "github.com/PatrickLaabs/eros/pkg/backend/middleware"
-        "github.com/PatrickLaabs/eros/pkg/backend/routes"
+        "github.com/PatrickLaabs/eros/api/middleware"
+        "github.com/PatrickLaabs/eros/api/routes"
+        _ "github.com/swaggo/http-swagger"
+        httpSwagger "github.com/swaggo/http-swagger"
         "log"
         "net/http"
 )
 
-/*
-Backend api server.
-Provides APIs for the frontend to consume, as creating and managing kubernetes clusters.
-*/
+// @title Swagger Example API
+// @version 1.0
+// @description API Backend for the eros platform.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Patrick Laabs
+// @contact.url http://www.swagger.io/support
+// @contact.email patrick.laabs@me.com
+
+// @license.name GNU GENERAL PUBLIC LICENSE
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host github.com/PatrickLaabs/eros
+// @BasePath /v2
 
 var (
         backendAddr = flag.String("backendAddr", ":3000", "address to server")
@@ -466,11 +271,253 @@ var (
 func Start() <span class="cov0" title="0">{
         mux := http.NewServeMux()
         mux.Handle("/", middleware.Router(mux))
-
+        mux.Handle("/swagger/", httpSwagger.WrapHandler)
         routes.RegisterRoutes(mux)
 
         log.Printf("Running server on port %v", *backendAddr)
         log.Fatal(http.ListenAndServe(*backendAddr, mux))
+}</span>
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package backendserver
+
+import (
+        "fmt"
+        "github.com/spf13/cobra"
+)
+
+// ServerCmd represents the server command
+var ServerCmd = &amp;cobra.Command{
+        Use:   "server",
+        Short: "Runs eros on your bastion node",
+        Long: `Runs eros on your bastion node` +
+                `and will take care of your management cluster using Cluster-API`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Println("server called")
+        }</span>,
+}
+
+func init() <span class="cov0" title="0">{
+        ServerCmd.AddCommand(startCmd)
+        ServerCmd.AddCommand(stopCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package backendserver
+
+import (
+        "fmt"
+        "github.com/PatrickLaabs/eros/api"
+        "github.com/spf13/cobra"
+)
+
+// startCmd represents the server command
+var startCmd = &amp;cobra.Command{
+        Use:   "start",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+
+                /* ToDos:
+                1. Set up Kind
+                */
+
+                //kind.Create()
+                fmt.Println("server-backend start called")
+                api.Start()
+        }</span>,
+}
+
+//func init() {
+//        serverCmd.AddCommand(startCmd)
+//}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package backendserver
+
+import (
+        "fmt"
+        "github.com/spf13/cobra"
+)
+
+// stopCmd represents the server command
+var stopCmd = &amp;cobra.Command{
+        Use:   "stop",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+
+                /* ToDos:
+                1. Set up Kind
+                */
+
+                //kind.Create()
+                fmt.Println("server stop called")
+        }</span>,
+}
+
+//func init() {
+//        serverCmd.AddCommand(startCmd)
+//}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "fmt"
+        "github.com/spf13/cobra"
+)
+
+// FrontendCmd represents the server command
+var FrontendCmd = &amp;cobra.Command{
+        Use:   "frontend",
+        Short: "Runs eros on your bastion node",
+        Long: `Runs eros on your bastion node` +
+                `and will take care of your management cluster using Cluster-API`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Println("server called")
+        }</span>,
+}
+
+func init() <span class="cov0" title="0">{
+        FrontendCmd.AddCommand(startCmd)
+        FrontendCmd.AddCommand(stopCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "github.com/PatrickLaabs/eros/frontend"
+        "github.com/spf13/cobra"
+)
+
+// startCmd represents the server command
+var startCmd = &amp;cobra.Command{
+        Use:   "start",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                frontend.Start()
+        }</span>,
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "github.com/spf13/cobra"
+)
+
+// stopCmd represents the server command
+var stopCmd = &amp;cobra.Command{
+        Use:   "stop",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) {<span class="cov0" title="0">
+                //frontend.Stop()
+        }</span>,
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package cmd
+
+import (
+        "github.com/PatrickLaabs/eros/cmd/backendserver"
+        "github.com/PatrickLaabs/eros/cmd/frontendserver"
+        "github.com/spf13/cobra"
+        "os"
+)
+
+// RootCmd represents the base command when called without any subcommands
+var rootCmd = &amp;cobra.Command{
+        Use:   "eros",
+        Short: "Run Kubernetes in no-time with GitOps onboard",
+}
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() <span class="cov0" title="0">{
+        err := rootCmd.Execute()
+        if err != nil </span><span class="cov0" title="0">{
+                os.Exit(1)
+        }</span>
+}
+
+func init() <span class="cov0" title="0">{
+        rootCmd.AddCommand(backendserver.ServerCmd)
+        rootCmd.AddCommand(frontendserver.FrontendCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">// Package docs Code generated by swaggo/swag. DO NOT EDIT
+package docs
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Patrick Laabs",
+            "url": "http://www.swagger.io/support",
+            "email": "patrick.laabs@me.com"
+        },
+        "license": {
+            "name": "GNU GENERAL PUBLIC LICENSE",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {}
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "1.0",
+        Host:             "github.com/PatrickLaabs/eros",
+        BasePath:         "/v2",
+        Schemes:          []string{},
+        Title:            "Swagger Example API",
+        Description:      "API Backend for the eros platform",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+        LeftDelim:        "{{",
+        RightDelim:       "}}",
+}
+
+func init() <span class="cov8" title="1">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }</span>
 </pre>
 		
@@ -482,8 +529,9 @@ package frontend
 
 import (
         "flag"
-        "github.com/PatrickLaabs/eros/views"
+        "github.com/PatrickLaabs/eros/frontend/views"
         "github.com/a-h/templ"
+        httpSwagger "github.com/swaggo/http-swagger"
         "log"
         "net/http"
 )
@@ -502,61 +550,16 @@ var (
 func Start() <span class="cov0" title="0">{
         fs := http.FileServer(http.Dir("./assets"))
         http.Handle("/assets/", http.StripPrefix("/assets/", fs))
-
         http.Handle("/", templ.Handler(views.LandingPage()))
+
+        httpSwagger.Handler()
 
         log.Printf("starting frontend on port %v", *frontendAddr)
         log.Fatal(http.ListenAndServe(*frontendAddr, nil))
 }</span>
 </pre>
 		
-		<pre class="file" id="file14" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package kind
-
-import (
-        "fmt"
-        kind "sigs.k8s.io/kind/pkg/cluster"
-)
-
-func Create() <span class="cov8" title="1">{
-        p := kind.NewProvider()
-
-        if err := p.Create(
-                "test",
-                kind.CreateWithConfigFile("../../kind-config.yaml"),
-        ); err != nil </span><span class="cov8" title="1">{
-                fmt.Printf("error creating kind cluster: %v", err)
-        }</span>
-}
-</pre>
-		
-		<pre class="file" id="file15" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package kind
-
-import "os/exec"
-
-func Delete() <span class="cov0" title="0">{
-        cmd := exec.Command("kind", "delete", "clusters", "-A")
-        cmd.Run()
-}</span>
-</pre>
-		
-		<pre class="file" id="file16" style="display: none">/*
-Copyright © 2024 Patrick Laabs patrick.laabs@me.com
-*/
-
-package preflight
-
-func Checks() {<span class="cov0" title="0">}</span>
-</pre>
-		
-		<pre class="file" id="file17" style="display: none">// Code generated by templ - DO NOT EDIT.
+		<pre class="file" id="file14" style="display: none">// Code generated by templ - DO NOT EDIT.
 
 // templ: version: v0.2.731
 /*
@@ -601,9 +604,17 @@ func Footer() templ.Component <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file18" style="display: none">// Code generated by templ - DO NOT EDIT.
+		<pre class="file" id="file15" style="display: none">// Code generated by templ - DO NOT EDIT.
 
 // templ: version: v0.2.731
+/*
+
+
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+
+
+*/
+
 package views
 
 //lint:file-ignore SA4006 This context is only used if a nested component is present.
@@ -638,9 +649,17 @@ func Header() templ.Component <span class="cov0" title="0">{
 }
 </pre>
 		
-		<pre class="file" id="file19" style="display: none">// Code generated by templ - DO NOT EDIT.
+		<pre class="file" id="file16" style="display: none">// Code generated by templ - DO NOT EDIT.
 
 // templ: version: v0.2.731
+/*
+
+
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+
+
+*/
+
 package views
 
 //lint:file-ignore SA4006 This context is only used if a nested component is present.
@@ -689,6 +708,65 @@ func LandingPage() templ.Component <span class="cov0" title="0">{
                 <span class="cov0" title="0">return templ_7745c5c3_Err</span>
         })
 }
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package main
+
+import "github.com/PatrickLaabs/eros/cmd"
+
+func main() <span class="cov0" title="0">{
+        cmd.Execute()
+}</span>
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package kind
+
+import (
+        "fmt"
+        kind "sigs.k8s.io/kind/pkg/cluster"
+)
+
+func Create() <span class="cov8" title="1">{
+        p := kind.NewProvider()
+
+        if err := p.Create(
+                "test",
+                kind.CreateWithConfigFile("../../kind-config.yaml"),
+        ); err != nil </span><span class="cov8" title="1">{
+                fmt.Printf("error creating kind cluster: %v", err)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package kind
+
+import "os/exec"
+
+func Delete() <span class="cov0" title="0">{
+        cmd := exec.Command("kind", "delete", "clusters", "-A")
+        cmd.Run()
+}</span>
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package preflight
+
+func Checks() {<span class="cov0" title="0">}</span>
 </pre>
 		
 		</div>
