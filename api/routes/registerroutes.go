@@ -13,10 +13,6 @@ var routeMap = map[string]http.HandlerFunc{
 	"/kubernetes/": Kubernetes,
 }
 
-//component := hello("John")
-//
-//	http.Handle("/", templ.Handler(component))
-
 // RegisterRoutes registers all routes with the HTTP server
 func RegisterRoutes(mux *http.ServeMux) {
 	for path, handler := range routeMap {

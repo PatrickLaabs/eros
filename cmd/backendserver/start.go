@@ -6,7 +6,7 @@ package backendserver
 
 import (
 	"fmt"
-	"github.com/PatrickLaabs/eros/pkg/backend"
+	"github.com/PatrickLaabs/eros/api"
 	"github.com/spf13/cobra"
 )
 
@@ -22,7 +22,7 @@ var startCmd = &cobra.Command{
 
 		//kind.Create()
 		fmt.Println("server-backend start called")
-		backend.Start()
+		api.Start()
 	},
 }
 
