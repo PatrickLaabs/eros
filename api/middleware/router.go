@@ -6,6 +6,7 @@ package middleware
 
 import (
 	"github.com/PatrickLaabs/eros/api/routes"
+	_ "github.com/PatrickLaabs/eros/docs"
 	"net/http"
 )
 

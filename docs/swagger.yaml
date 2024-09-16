@@ -1,5 +1,5 @@
 basePath: /v2
-host: github.com/PatrickLaabs/eros
+host: localhost:3000
 info:
   contact:
     email: patrick.laabs@me.com
@@ -10,7 +10,7 @@ info:
     name: GNU GENERAL PUBLIC LICENSE
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
+  title: eros swagger API documentation
   version: "1.0"
 paths: {}
 swagger: "2.0"

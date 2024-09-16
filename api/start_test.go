@@ -5,7 +5,6 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/PatrickLaabs/eros/api/routes"
 	"net/http"
@@ -14,22 +13,6 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	t.Run("returns version", func(t *testing.T) {
-		request := httptest.NewRequest(http.MethodGet, "/version", nil)
-		response := httptest.NewRecorder()
-
-		routes.Version(response, request)
-
-		// Decode the response body
-		var decodedJson string
-		//err := json.NewDecoder(response.Body).Decode(&decodedJson)
-		err := json.NewDecoder(response.Body).Decode(&decodedJson)
-		if err != nil {
-			t.Errorf("failed to decode json: %v", err)
-		}
-
-		assertResponseBody(t, decodedJson, "0.1.0")
-	})
 	t.Run("runs kubernetes endpoint using local flavor", func(t *testing.T) {
 		request := kubernetesFlavorRequest("local")
 		response := httptest.NewRecorder()

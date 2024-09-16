@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "description": "API Backend for the eros platform.",
-        "title": "Swagger Example API",
+        "title": "eros swagger API documentation",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "Patrick Laabs",
@@ -15,7 +15,7 @@
         },
         "version": "1.0"
     },
-    "host": "github.com/PatrickLaabs/eros",
+    "host": "localhost:3000",
     "basePath": "/v2",
     "paths": {}
 }

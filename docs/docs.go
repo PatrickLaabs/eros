@@ -29,10 +29,10 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "github.com/PatrickLaabs/eros",
+	Host:             "localhost:3000",
 	BasePath:         "/v2",
 	Schemes:          []string{},
-	Title:            "Swagger Example API",
+	Title:            "eros swagger API documentation",
 	Description:      "API Backend for the eros platform.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,

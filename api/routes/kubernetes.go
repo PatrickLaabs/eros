@@ -6,6 +6,7 @@ package routes
 
 import (
 	"fmt"
+	_ "github.com/PatrickLaabs/eros/docs"
 	"github.com/PatrickLaabs/eros/pkg/kind"
 	"net/http"
 	"strings"
