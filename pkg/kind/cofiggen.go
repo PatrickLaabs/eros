@@ -1,3 +1,7 @@
+/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
 package kind
 
 import (
@@ -5,7 +9,7 @@ import (
 	"log"
 )
 
-func Configgen() []byte {
+func configgen() []byte {
 	kindConfigYaml := &kindConfig{
 		Kind:       "Cluster",
 		APIVersion: "kind.x-k8s.io/v1alpha4",
@@ -38,6 +42,7 @@ func Configgen() []byte {
 	}
 
 	yamlData, err := yaml.Marshal(kindConfigYaml)
+	// ToDo: Testing err handling is still a thing
 	if err != nil {
 		log.Printf("error marshalling kind config: %v", err)
 	}

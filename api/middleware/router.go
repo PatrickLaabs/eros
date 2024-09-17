@@ -22,7 +22,6 @@ func Router(next http.Handler) http.Handler {
 		case "/kubernetes":
 			routes.Kubernetes(w, r)
 		default:
-			// Handle 404 Not Found
 			http.Error(w, "Not found", http.StatusNotFound)
 			return
 		}
