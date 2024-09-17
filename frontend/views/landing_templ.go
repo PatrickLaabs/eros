@@ -34,7 +34,7 @@ func LandingPage() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><title>eros</title><link rel=\"stylesheet\" href=\"/assets/style.css\"></head><body><div class=\"page-wrapper\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<html><head><title>eros</title><link rel=\"stylesheet\" href=\"/assets/style.css\"><script>\n            function fetchVersion() {\n                fetch('http://localhost:3000/version')\n                    .then(response => response.json())\n                    .then(data => {\n                        document.getElementById('version').textContent = 'API Version: ' + data;\n                    })\n                    .catch(error => {\n                        console.error('Error fetching version:', error);\n                        document.getElementById('version').textContent = 'Failed to fetch version.';\n                    });\n            }\n        </script></head><body><div class=\"page-wrapper\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -42,7 +42,7 @@ func LandingPage() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"container\"><div class=\"main-content\"><h1>Welcome to eros</h1><p>frontend app for eros backend api</p><button onclick=\"window.location.href=&#39;http://localhost:3000/version&#39;\">Click me!</button></div></main></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<main class=\"container\"><div class=\"main-content\"><h1>Welcome to eros</h1><p>frontend app for eros backend api</p><button onclick=\"fetchVersion()\">Click me!</button><p id=\"version\"></p></div></main></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

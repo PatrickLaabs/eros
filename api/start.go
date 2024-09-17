@@ -34,9 +34,10 @@ var (
 
 func Start() {
 	mux := http.NewServeMux()
-	mux.Handle("/", middleware.Router(mux))
 	routes.RegisterRoutes(mux)
 
+	handler := middleware.Router(mux)
+
 	log.Printf("Running server on port %v", *backendAddr)
-	log.Fatal(http.ListenAndServe(*backendAddr, mux))
+	log.Fatal(http.ListenAndServe(*backendAddr, handler))
 }

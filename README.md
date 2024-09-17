@@ -6,7 +6,6 @@
 * Just
 
 ## Get started
-
 Start the API Backend:
 ```shell
 eros server start
@@ -16,6 +15,9 @@ Start the Frontend Server:
 ```shell
 eros frontend start
 ```
+
+You can now either open up the frontend application via `http://localhost:8080`
+or do direct queries against the api, like ` curl localhost:3000/kubernetes/local/create`.
 
 ## Documentation
 ### Backend API

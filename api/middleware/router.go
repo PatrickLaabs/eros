@@ -5,24 +5,19 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package middleware
 
 import (
-	"github.com/PatrickLaabs/eros/api/routes"
 	_ "github.com/PatrickLaabs/eros/docs"
 	"net/http"
 )
 
 func Router(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Extract the URL path
-		path := r.URL.Path
+		w.Header().Set("Access-Control-Allow-Origin", "*") // Allows all origins; adjust as needed
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-		// Implement routing logic based on the URL path
-		switch path {
-		case "/version":
-			routes.Version(w, r)
-		case "/kubernetes":
-			routes.Kubernetes(w, r)
-		default:
-			http.Error(w, "Not found", http.StatusNotFound)
+		// Handle preflight requests
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusOK)
 			return
 		}
 
