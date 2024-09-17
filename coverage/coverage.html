@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>cmd: Go Coverage Report</title>
+		<title>middleware: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -55,25 +55,55 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/PatrickLaabs/eros/cmd/root.go (0.0%)</option>
+				<option value="file0">github.com/PatrickLaabs/eros/api/middleware/router.go (0.0%)</option>
 				
-				<option value="file1">github.com/PatrickLaabs/eros/cmd/server/server.go (0.0%)</option>
+				<option value="file1">github.com/PatrickLaabs/eros/api/routes/kubernetes.go (64.7%)</option>
 				
-				<option value="file2">github.com/PatrickLaabs/eros/cmd/server/start.go (0.0%)</option>
+				<option value="file2">github.com/PatrickLaabs/eros/api/routes/registerroutes.go (0.0%)</option>
 				
-				<option value="file3">github.com/PatrickLaabs/eros/cmd/server/stop.go (0.0%)</option>
+				<option value="file3">github.com/PatrickLaabs/eros/api/routes/swagger.go (0.0%)</option>
 				
-				<option value="file4">github.com/PatrickLaabs/eros/main.go (0.0%)</option>
+				<option value="file4">github.com/PatrickLaabs/eros/api/routes/version.go (60.0%)</option>
 				
-				<option value="file5">github.com/PatrickLaabs/eros/pkg/backend/routes/version.go (75.0%)</option>
+				<option value="file5">github.com/PatrickLaabs/eros/api/start.go (0.0%)</option>
 				
-				<option value="file6">github.com/PatrickLaabs/eros/pkg/backend/start.go (0.0%)</option>
+				<option value="file6">github.com/PatrickLaabs/eros/cmd/backendserver/server.go (0.0%)</option>
 				
-				<option value="file7">github.com/PatrickLaabs/eros/pkg/kind/create.go (0.0%)</option>
+				<option value="file7">github.com/PatrickLaabs/eros/cmd/backendserver/start.go (0.0%)</option>
 				
-				<option value="file8">github.com/PatrickLaabs/eros/pkg/preflight/checks.go (0.0%)</option>
+				<option value="file8">github.com/PatrickLaabs/eros/cmd/backendserver/stop.go (0.0%)</option>
 				
-				<option value="file9">github.com/PatrickLaabs/eros/pkg/server/startBackend.go (0.0%)</option>
+				<option value="file9">github.com/PatrickLaabs/eros/cmd/frontendserver/server.go (0.0%)</option>
+				
+				<option value="file10">github.com/PatrickLaabs/eros/cmd/frontendserver/start.go (0.0%)</option>
+				
+				<option value="file11">github.com/PatrickLaabs/eros/cmd/frontendserver/stop.go (0.0%)</option>
+				
+				<option value="file12">github.com/PatrickLaabs/eros/cmd/root.go (0.0%)</option>
+				
+				<option value="file13">github.com/PatrickLaabs/eros/docs/docs.go (100.0%)</option>
+				
+				<option value="file14">github.com/PatrickLaabs/eros/frontend/start.go (0.0%)</option>
+				
+				<option value="file15">github.com/PatrickLaabs/eros/frontend/views/footer_templ.go (0.0%)</option>
+				
+				<option value="file16">github.com/PatrickLaabs/eros/frontend/views/header_templ.go (0.0%)</option>
+				
+				<option value="file17">github.com/PatrickLaabs/eros/frontend/views/landing_templ.go (0.0%)</option>
+				
+				<option value="file18">github.com/PatrickLaabs/eros/main.go (0.0%)</option>
+				
+				<option value="file19">github.com/PatrickLaabs/eros/pkg/kind/cofiggen.go (80.0%)</option>
+				
+				<option value="file20">github.com/PatrickLaabs/eros/pkg/kind/create.go (0.0%)</option>
+				
+				<option value="file21">github.com/PatrickLaabs/eros/pkg/kind/delete.go (0.0%)</option>
+				
+				<option value="file22">github.com/PatrickLaabs/eros/pkg/kind/getclusters.go (0.0%)</option>
+				
+				<option value="file23">github.com/PatrickLaabs/eros/pkg/preflight/checks.go (0.0%)</option>
+				
+				<option value="file24">github.com/PatrickLaabs/eros/pkg/testhelper/testhelper.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -91,39 +121,206 @@
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package cmd
+package middleware
 
 import (
-        "github.com/PatrickLaabs/eros/cmd/server"
-        "github.com/spf13/cobra"
-        "os"
+        "github.com/PatrickLaabs/eros/api/routes"
+        _ "github.com/PatrickLaabs/eros/docs"
+        "net/http"
 )
 
-// RootCmd represents the base command when called without any subcommands
-var rootCmd = &amp;cobra.Command{
-        Use:   "eros",
-        Short: "Run Kubernetes in no-time with GitOps onboard",
-}
+func Router(next http.Handler) http.Handler <span class="cov0" title="0">{
+        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                // Extract the URL path
+                path := r.URL.Path
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
-func Execute() <span class="cov0" title="0">{
-        err := rootCmd.Execute()
-        if err != nil </span><span class="cov0" title="0">{
-                os.Exit(1)
-        }</span>
-}
+                // Implement routing logic based on the URL path
+                switch path </span>{
+                case "/version":<span class="cov0" title="0">
+                        routes.Version(w, r)</span>
+                case "/kubernetes":<span class="cov0" title="0">
+                        routes.Kubernetes(w, r)</span>
+                default:<span class="cov0" title="0">
+                        // Handle 404 Not Found
+                        http.Error(w, "Not found", http.StatusNotFound)
+                        return</span>
+                }
 
-func init() <span class="cov0" title="0">{
-        rootCmd.AddCommand(server.ServerCmd)
-}</span>
+                // Pass the request to the next handler in the chain
+                <span class="cov0" title="0">next.ServeHTTP(w, r)</span>
+        })
+}
 </pre>
 		
 		<pre class="file" id="file1" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package server
+package routes
+
+import (
+        "fmt"
+        _ "github.com/PatrickLaabs/eros/docs"
+        "github.com/PatrickLaabs/eros/pkg/kind"
+        "log"
+        "net/http"
+        "strings"
+)
+
+// Kubernetes is a Mocking and Test API Implementation
+func Kubernetes(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        flavor := strings.TrimPrefix(r.URL.Path, "/kubernetes/")
+        clustername := "eros-bootstrap-cluster"
+        // Validate flavor input
+        if flavor == "" </span><span class="cov8" title="1">{
+                http.Error(w, "Invalid flavor", http.StatusBadRequest)
+                return
+        }</span>
+
+        // Handle different flavors
+        <span class="cov8" title="1">switch flavor </span>{
+        case "local/create":<span class="cov0" title="0">
+                fmt.Fprint(w, "Starting local cluster:\n")
+                kind.Create(clustername, w, r)</span>
+        case "local/delete":<span class="cov0" title="0">
+                fmt.Fprint(w, "Deleting local cluster:\n")
+                err := kind.Delete(clustername)
+                if err != nil </span><span class="cov0" title="0">{
+                        log.Printf("error deleting cluster: %v", err)
+                }</span>
+        case "local/getclusters":<span class="cov8" title="1">
+                fmt.Fprint(w, "Getting local clusters:\n")
+                kind.GetClusters(w, r)</span>
+        case "gcp":<span class="cov8" title="1">
+                w.WriteHeader(http.StatusOK)
+                fmt.Fprint(w, "Starting gcp cluster")</span>
+        default:<span class="cov8" title="1">
+                http.Error(w, "Unsupported flavor", http.StatusBadRequest)</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package routes
+
+import (
+        _ "github.com/PatrickLaabs/eros/docs"
+        "net/http"
+)
+
+var routeMap = map[string]http.HandlerFunc{
+        "/version":     Version,
+        "/kubernetes/": Kubernetes,
+        "/swagger/":    Swagger,
+}
+
+// RegisterRoutes registers all routes with the HTTP server
+func RegisterRoutes(mux *http.ServeMux) <span class="cov0" title="0">{
+        for path, handler := range routeMap </span><span class="cov0" title="0">{
+                mux.HandleFunc(path, handler)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package routes
+
+import (
+        _ "github.com/PatrickLaabs/eros/docs"
+        "github.com/swaggo/http-swagger"
+        "net/http"
+)
+
+func Swagger(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        httpSwagger.WrapHandler(w, r)
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package routes
+
+import (
+        "encoding/json"
+        _ "github.com/PatrickLaabs/eros/docs"
+        "net/http"
+)
+
+//        @Summary                Get API Version
+//        @Description        Retrieves the current version of the API, including major, minor, and patch numbers.
+//        @Tags                        general
+//        @Produce                json
+//        @Success                200        {object}        api.VersionResponse        "API version response"
+//        @Router                        /version [get]
+
+// Version returns the current version of the API Server
+func Version(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        version := "0.1.0"
+        err := json.NewEncoder(w).Encode(version)
+        if err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "failed to decode json", http.StatusBadRequest)
+                return
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package api
+
+import (
+        "flag"
+        "github.com/PatrickLaabs/eros/api/middleware"
+        "github.com/PatrickLaabs/eros/api/routes"
+        _ "github.com/PatrickLaabs/eros/docs"
+        "log"
+        "net/http"
+)
+
+//        @title                        eros swagger API documentation
+//        @version                1.0
+//        @description        API Backend for the eros platform.
+//        @termsOfService        http://swagger.io/terms/
+
+//        @contact.name        Patrick Laabs
+//        @contact.url        http://www.swagger.io/support
+//        @contact.email        patrick.laabs@me.com
+
+//        @license.name        GNU GENERAL PUBLIC LICENSE
+//        @license.url        http://www.apache.org/licenses/LICENSE-2.0.html
+
+//        @host                localhost:3000
+//        @BasePath        /v2
+
+var (
+        backendAddr = flag.String("backendAddr", ":3000", "address to server")
+)
+
+func Start() <span class="cov0" title="0">{
+        mux := http.NewServeMux()
+        mux.Handle("/", middleware.Router(mux))
+        routes.RegisterRoutes(mux)
+
+        log.Printf("Running server on port %v", *backendAddr)
+        log.Fatal(http.ListenAndServe(*backendAddr, mux))
+}</span>
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package backendserver
 
 import (
         "fmt"
@@ -147,15 +344,15 @@ func init() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file2" style="display: none">/*
+		<pre class="file" id="file7" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package server
+package backendserver
 
 import (
         "fmt"
-        "github.com/PatrickLaabs/eros/pkg/backend"
+        "github.com/PatrickLaabs/eros/api"
         "github.com/spf13/cobra"
 )
 
@@ -171,7 +368,7 @@ var startCmd = &amp;cobra.Command{
 
                 //kind.Create()
                 fmt.Println("server-backend start called")
-                backend.Start()
+                api.Start()
         }</span>,
 }
 
@@ -180,11 +377,11 @@ var startCmd = &amp;cobra.Command{
 //}
 </pre>
 		
-		<pre class="file" id="file3" style="display: none">/*
+		<pre class="file" id="file8" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package server
+package backendserver
 
 import (
         "fmt"
@@ -211,7 +408,346 @@ var stopCmd = &amp;cobra.Command{
 //}
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">/*
+		<pre class="file" id="file9" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "fmt"
+        "github.com/spf13/cobra"
+)
+
+// FrontendCmd represents the server command
+var FrontendCmd = &amp;cobra.Command{
+        Use:   "frontend",
+        Short: "Runs eros on your bastion node",
+        Long: `Runs eros on your bastion node` +
+                `and will take care of your management cluster using Cluster-API`,
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                fmt.Println("server called")
+        }</span>,
+}
+
+func init() <span class="cov0" title="0">{
+        FrontendCmd.AddCommand(startCmd)
+        FrontendCmd.AddCommand(stopCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "github.com/PatrickLaabs/eros/frontend"
+        "github.com/spf13/cobra"
+)
+
+// startCmd represents the server command
+var startCmd = &amp;cobra.Command{
+        Use:   "start",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) <span class="cov0" title="0">{
+                frontend.Start()
+        }</span>,
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontendserver
+
+import (
+        "github.com/spf13/cobra"
+)
+
+// stopCmd represents the server command
+var stopCmd = &amp;cobra.Command{
+        Use:   "stop",
+        Short: "Runs eros on your bastion node",
+        Run: func(cmd *cobra.Command, args []string) {<span class="cov0" title="0">
+                //frontend.Stop()
+        }</span>,
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package cmd
+
+import (
+        "github.com/PatrickLaabs/eros/cmd/backendserver"
+        "github.com/PatrickLaabs/eros/cmd/frontendserver"
+        "github.com/spf13/cobra"
+        "os"
+)
+
+// RootCmd represents the base command when called without any subcommands
+var rootCmd = &amp;cobra.Command{
+        Use:   "eros",
+        Short: "Run Kubernetes in no-time with GitOps onboard",
+}
+
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
+func Execute() <span class="cov0" title="0">{
+        err := rootCmd.Execute()
+        if err != nil </span><span class="cov0" title="0">{
+                os.Exit(1)
+        }</span>
+}
+
+func init() <span class="cov0" title="0">{
+        rootCmd.AddCommand(backendserver.ServerCmd)
+        rootCmd.AddCommand(frontendserver.FrontendCmd)
+}</span>
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">// Package docs Code generated by swaggo/swag. DO NOT EDIT
+package docs
+
+import "github.com/swaggo/swag"
+
+const docTemplate = `{
+    "schemes": {{ marshal .Schemes }},
+    "swagger": "2.0",
+    "info": {
+        "description": "{{escape .Description}}",
+        "title": "{{.Title}}",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Patrick Laabs",
+            "url": "http://www.swagger.io/support",
+            "email": "patrick.laabs@me.com"
+        },
+        "license": {
+            "name": "GNU GENERAL PUBLIC LICENSE",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {}
+}`
+
+// SwaggerInfo holds exported Swagger Info so clients can modify it
+var SwaggerInfo = &amp;swag.Spec{
+        Version:          "1.0",
+        Host:             "localhost:3000",
+        BasePath:         "/v2",
+        Schemes:          []string{},
+        Title:            "eros swagger API documentation",
+        Description:      "API Backend for the eros platform.",
+        InfoInstanceName: "swagger",
+        SwaggerTemplate:  docTemplate,
+        LeftDelim:        "{{",
+        RightDelim:       "}}",
+}
+
+func init() <span class="cov8" title="1">{
+        swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
+}</span>
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package frontend
+
+import (
+        "flag"
+        "github.com/PatrickLaabs/eros/frontend/views"
+        "github.com/a-h/templ"
+        httpSwagger "github.com/swaggo/http-swagger"
+        "log"
+        "net/http"
+)
+
+/*
+Frontend Application.
+Consuming the backend api to created and manage kubernetes clusters.
+
+This will always be started, when running the backend server.
+*/
+
+var (
+        frontendAddr = flag.String("frontendAddr", ":8080", "address to server")
+)
+
+func Start() <span class="cov0" title="0">{
+        fs := http.FileServer(http.Dir("./assets"))
+        http.Handle("/assets/", http.StripPrefix("/assets/", fs))
+        http.Handle("/", templ.Handler(views.LandingPage()))
+
+        httpSwagger.Handler()
+
+        log.Printf("starting frontend on port %v", *frontendAddr)
+        log.Fatal(http.ListenAndServe(*frontendAddr, nil))
+}</span>
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">// Code generated by templ - DO NOT EDIT.
+
+// templ: version: v0.2.731
+/*
+
+
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+
+
+*/
+
+package views
+
+//lint:file-ignore SA4006 This context is only used if a nested component is present.
+
+import "github.com/a-h/templ"
+import templruntime "github.com/a-h/templ/runtime"
+
+func Footer() templ.Component <span class="cov0" title="0">{
+        return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) </span><span class="cov0" title="0">{
+                templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+                templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+                if !templ_7745c5c3_IsBuffer </span><span class="cov0" title="0">{
+                        defer func() </span><span class="cov0" title="0">{
+                                templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+                                if templ_7745c5c3_Err == nil </span><span class="cov0" title="0">{
+                                        templ_7745c5c3_Err = templ_7745c5c3_BufErr
+                                }</span>
+                        }()
+                }
+                <span class="cov0" title="0">ctx = templ.InitializeContext(ctx)
+                templ_7745c5c3_Var1 := templ.GetChildren(ctx)
+                if templ_7745c5c3_Var1 == nil </span><span class="cov0" title="0">{
+                        templ_7745c5c3_Var1 = templ.NopComponent
+                }</span>
+                <span class="cov0" title="0">ctx = templ.ClearChildren(ctx)
+                _, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("&lt;footer&gt;&lt;div class=\"container\"&gt;&lt;p&gt;&amp;copy; 2024 Patrick Laabs. All rights reserved.&lt;/p&gt;&lt;p&gt;&lt;a href=\"/impressum\"&gt;Impressum&lt;/a&gt; | &lt;a href=\"/datenschutz\"&gt;Datenschutz&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;&lt;/footer&gt;")
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">return templ_7745c5c3_Err</span>
+        })
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">// Code generated by templ - DO NOT EDIT.
+
+// templ: version: v0.2.731
+/*
+
+
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+
+
+*/
+
+package views
+
+//lint:file-ignore SA4006 This context is only used if a nested component is present.
+
+import "github.com/a-h/templ"
+import templruntime "github.com/a-h/templ/runtime"
+
+func Header() templ.Component <span class="cov0" title="0">{
+        return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) </span><span class="cov0" title="0">{
+                templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+                templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+                if !templ_7745c5c3_IsBuffer </span><span class="cov0" title="0">{
+                        defer func() </span><span class="cov0" title="0">{
+                                templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+                                if templ_7745c5c3_Err == nil </span><span class="cov0" title="0">{
+                                        templ_7745c5c3_Err = templ_7745c5c3_BufErr
+                                }</span>
+                        }()
+                }
+                <span class="cov0" title="0">ctx = templ.InitializeContext(ctx)
+                templ_7745c5c3_Var1 := templ.GetChildren(ctx)
+                if templ_7745c5c3_Var1 == nil </span><span class="cov0" title="0">{
+                        templ_7745c5c3_Var1 = templ.NopComponent
+                }</span>
+                <span class="cov0" title="0">ctx = templ.ClearChildren(ctx)
+                _, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("&lt;header&gt;&lt;nav class=\"main-nav\"&gt;&lt;div class=\"container\"&gt;&lt;div class=\"nav-content\"&gt;&lt;ul class=\"nav-links\"&gt;&lt;li&gt;&lt;a href=\"/\"&gt;Home&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=\"/login\"&gt;Login&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;&lt;/div&gt;&lt;/nav&gt;&lt;/header&gt;")
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">return templ_7745c5c3_Err</span>
+        })
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">// Code generated by templ - DO NOT EDIT.
+
+// templ: version: v0.2.731
+/*
+
+
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+
+
+*/
+
+package views
+
+//lint:file-ignore SA4006 This context is only used if a nested component is present.
+
+import "github.com/a-h/templ"
+import templruntime "github.com/a-h/templ/runtime"
+
+func LandingPage() templ.Component <span class="cov0" title="0">{
+        return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) </span><span class="cov0" title="0">{
+                templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+                templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+                if !templ_7745c5c3_IsBuffer </span><span class="cov0" title="0">{
+                        defer func() </span><span class="cov0" title="0">{
+                                templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+                                if templ_7745c5c3_Err == nil </span><span class="cov0" title="0">{
+                                        templ_7745c5c3_Err = templ_7745c5c3_BufErr
+                                }</span>
+                        }()
+                }
+                <span class="cov0" title="0">ctx = templ.InitializeContext(ctx)
+                templ_7745c5c3_Var1 := templ.GetChildren(ctx)
+                if templ_7745c5c3_Var1 == nil </span><span class="cov0" title="0">{
+                        templ_7745c5c3_Var1 = templ.NopComponent
+                }</span>
+                <span class="cov0" title="0">ctx = templ.ClearChildren(ctx)
+                _, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("&lt;html&gt;&lt;head&gt;&lt;title&gt;eros&lt;/title&gt;&lt;link rel=\"stylesheet\" href=\"/assets/style.css\"&gt;&lt;/head&gt;&lt;body&gt;&lt;div class=\"page-wrapper\"&gt;")
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">templ_7745c5c3_Err = Header().Render(ctx, templ_7745c5c3_Buffer)
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("&lt;main class=\"container\"&gt;&lt;div class=\"main-content\"&gt;&lt;h1&gt;Welcome to eros&lt;/h1&gt;&lt;p&gt;frontend app for eros backend api&lt;/p&gt;&lt;button onclick=\"window.location.href=&amp;#39;http://localhost:3000/version&amp;#39;\"&gt;Click me!&lt;/button&gt;&lt;/div&gt;&lt;/main&gt;&lt;/div&gt;")
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">templ_7745c5c3_Err = Footer().Render(ctx, templ_7745c5c3_Buffer)
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("&lt;/body&gt;&lt;/html&gt;")
+                if templ_7745c5c3_Err != nil </span><span class="cov0" title="0">{
+                        return templ_7745c5c3_Err
+                }</span>
+                <span class="cov0" title="0">return templ_7745c5c3_Err</span>
+        })
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">/*
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
@@ -224,93 +760,183 @@ func main() <span class="cov0" title="0">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">package routes
-
-import (
-        "fmt"
-        "net/http"
-)
-
-func Version(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
-        version := "0.1.0"
-
-        _, err := fmt.Fprint(w, version)
-        if err != nil </span><span class="cov0" title="0">{
-                return
-        }</span>
-}
-</pre>
-		
-		<pre class="file" id="file6" style="display: none">package backend
-
-import (
-        "flag"
-        "fmt"
-        "github.com/PatrickLaabs/eros/pkg/backend/routes"
-        "html"
-        "log"
-        "net/http"
-        "strings"
-)
-
-/*
-Backend api server.
-Provides APIs for the frontend to consume, as creating and managing kubernetes clusters.
+		<pre class="file" id="file19" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-var (
-        greeting = flag.String("g", "Hello", "Greet with `greeting`")
-        addr     = flag.String("addr", ":8080", "address to server")
-)
-
-func greet(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
-        name := strings.Trim(r.URL.Path, "/")
-        if name == "" </span><span class="cov0" title="0">{
-                name = "Gopher"
-        }</span>
-
-        <span class="cov0" title="0">_, err := fmt.Fprintf(w, "%s, %s!\n", *greeting, html.EscapeString(name))
-        if err != nil </span><span class="cov0" title="0">{
-                return
-        }</span>
-}
-
-func Start() <span class="cov0" title="0">{
-        http.HandleFunc("/", greet)
-        http.HandleFunc("/version", routes.Version)
-
-        log.Fatal(http.ListenAndServe(*addr, nil))
-}</span>
-</pre>
-		
-		<pre class="file" id="file7" style="display: none">package kind
+package kind
 
 import (
-        "fmt"
+        "gopkg.in/yaml.v3"
+        "log"
+)
+
+func configgen() []byte <span class="cov8" title="1">{
+        kindConfigYaml := &amp;kindConfig{
+                Kind:       "Cluster",
+                APIVersion: "kind.x-k8s.io/v1alpha4",
+                Networking: struct {
+                        IPFamily string `yaml:"ipFamily"`
+                }{IPFamily: "dual"},
+                Nodes: []struct {
+                        Role        string `yaml:"role"`
+                        ExtraMounts []struct {
+                                HostPath      string `yaml:"hostPath"`
+                                ContainerPath string `yaml:"containerPath"`
+                        } `yaml:"extraMounts"`
+                }{
+                        {
+                                Role: "control-plane",
+                                ExtraMounts: []struct {
+                                        HostPath      string `yaml:"hostPath"`
+                                        ContainerPath string `yaml:"containerPath"`
+                                }([]struct {
+                                        HostPath      string
+                                        ContainerPath string
+                                }{
+                                        {
+                                                HostPath:      "/var/run/docker.sock",
+                                                ContainerPath: "/var/run/docker.sock",
+                                        },
+                                }),
+                        },
+                },
+        }
+
+        yamlData, err := yaml.Marshal(kindConfigYaml)
+        // ToDo: Testing err handling is still a thing
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("error marshalling kind config: %v", err)
+        }</span>
+
+        <span class="cov8" title="1">return yamlData</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package kind
+
+import (
+        "encoding/json"
+        "log"
+        "net/http"
         kind "sigs.k8s.io/kind/pkg/cluster"
 )
 
-func Create() <span class="cov0" title="0">{
+func Create(clustername string, w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
         p := kind.NewProvider()
-
         if err := p.Create(
-                "test",
-                kind.CreateWithConfigFile("./kind-config.yaml"),
+                clustername,
+                kind.CreateWithRawConfig(configgen()),
         ); err != nil </span><span class="cov0" title="0">{
-                fmt.Printf("error creating kind cluster: %v", err)
+                log.Printf("error creating kind cluster: %v", err)
         }</span>
+
+        <span class="cov0" title="0">w.Header().Set("Content-Type", "application/yaml")
+        err := json.NewEncoder(w).Encode(p)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("error encoding kind cluster: %v", err)
+        }</span>
+        //log.Printf("created kind cluster: %s", p)
 }
 </pre>
 		
-		<pre class="file" id="file8" style="display: none">package preflight
+		<pre class="file" id="file21" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package kind
+
+import (
+        "log"
+        "os/exec"
+)
+
+func Delete(clustername string) (err error) <span class="cov0" title="0">{
+        cmd := exec.Command("kind", "delete", "clusters", clustername)
+        err = cmd.Run()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("error deleting kind cluster: %v", err)
+                return err
+        }</span>
+        <span class="cov0" title="0">return err</span>
+}
+</pre>
+		
+		<pre class="file" id="file22" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package kind
+
+import (
+        "encoding/json"
+        "log"
+        "net/http"
+        kind "sigs.k8s.io/kind/pkg/cluster"
+)
+
+func GetClusters(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        p := kind.NewProvider()
+
+        list, err := p.List()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("error listing kind clusters: %v", err)
+        }</span>
+
+        // Handle successful listing, e.g., return the list as JSON
+        <span class="cov0" title="0">w.Header().Set("Content-Type", "application/json")
+        err = json.NewEncoder(w).Encode(list)
+        if err != nil </span><span class="cov0" title="0">{
+                log.Printf("error encoding kind clusters: %v", err)
+        }</span>
+        <span class="cov0" title="0">log.Printf("clusters: %s", list)</span>
+}
+</pre>
+		
+		<pre class="file" id="file23" style="display: none">/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package preflight
 
 func Checks() {<span class="cov0" title="0">}</span>
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">package server
+		<pre class="file" id="file24" style="display: none">package testhelper
 
-// startBackend the backend server
-func startBackend() {<span class="cov0" title="0">}</span>
+import (
+        "fmt"
+        "net/http"
+        "testing"
+)
+
+/*
+Some helper Functions for the test units
+*/
+
+// KubernetesFlavorRequest takes in the kind of flavor we want to process for the kubernetes endpoint
+func KubernetesFlavorRequest(flavor string) *http.Request <span class="cov0" title="0">{
+        req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/kubernetes/%s", flavor), nil)
+        return req
+}</span>
+
+func AssertStatus(t testing.TB, got, want int) <span class="cov0" title="0">{
+        t.Helper()
+        if got != want </span><span class="cov0" title="0">{
+                t.Errorf("did not get correct status, got %d, want %d", got, want)
+        }</span>
+}
+
+func AssertResponseBody(t testing.TB, got, want string) <span class="cov0" title="0">{
+        t.Helper()
+        if got != want </span><span class="cov0" title="0">{
+                t.Errorf("response body is wrong, got %q want %q", got, want)
+        }</span>
+}
 </pre>
 		
 		</div>

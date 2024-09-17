@@ -5,17 +5,25 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package kind
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
+	"net/http"
 	kind "sigs.k8s.io/kind/pkg/cluster"
 )
 
-func Create() {
+func Create(clustername string, w http.ResponseWriter, r *http.Request) {
 	p := kind.NewProvider()
-
 	if err := p.Create(
-		"test",
-		kind.CreateWithConfigFile("./kind-config.yaml"),
+		clustername,
+		kind.CreateWithRawConfig(configgen()),
 	); err != nil {
-		fmt.Printf("error creating kind cluster: %v", err)
+		log.Printf("error creating kind cluster: %v", err)
 	}
+
+	w.Header().Set("Content-Type", "application/yaml")
+	err := json.NewEncoder(w).Encode(p)
+	if err != nil {
+		log.Printf("error encoding kind cluster: %v", err)
+	}
+	//log.Printf("created kind cluster: %s", p)
 }

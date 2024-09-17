@@ -5,7 +5,7 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 package frontendserver
 
 import (
-	"github.com/PatrickLaabs/eros/pkg/frontend"
+	"github.com/PatrickLaabs/eros/frontend"
 	"github.com/spf13/cobra"
 )
 

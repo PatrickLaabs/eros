@@ -37,4 +37,8 @@ lint:
 
 gen:
     @echo "Generating templ files..."
-    {{TEMPL_CMD}} generate views
+    {{TEMPL_CMD}} generate ./frontend/views
+
+swagger:
+    @echo "Generating API documentation..."
+    swag init -g ./api/start.go -o ./docs

@@ -1,0 +1,41 @@
+/*
+Copyright © 2024 Patrick Laabs patrick.laabs@me.com
+*/
+
+package views
+
+templ LandingPage() {
+    <html>
+    <head>
+        <title>eros</title>
+        <link rel="stylesheet" href="/assets/style.css" />
+        <script>
+            function fetchVersion() {
+                fetch('http://localhost:3000/version')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('version').textContent = 'API Version: ' + data;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching version:', error);
+                        document.getElementById('version').textContent = 'Failed to fetch version.';
+                    });
+            }
+        </script>
+    </head>
+    <body>
+        <div class="page-wrapper">
+            @Header()
+            <main class="container">
+                <div class="main-content">
+                    <h1>Welcome to eros</h1>
+                    <p>frontend app for eros backend api</p>
+                    <button onclick="fetchVersion()">Click me!</button>
+                    <p id="version"></p>
+                </div>
+            </main>
+        </div>
+        @Footer()
+    </body>
+    </html>
+}
