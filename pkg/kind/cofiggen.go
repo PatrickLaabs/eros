@@ -13,30 +13,18 @@ func configgen() []byte {
 	kindConfigYaml := &kindConfig{
 		Kind:       "Cluster",
 		APIVersion: "kind.x-k8s.io/v1alpha4",
-		Networking: struct {
-			IPFamily string `yaml:"ipFamily"`
-		}{IPFamily: "dual"},
-		Nodes: []struct {
-			Role        string `yaml:"role"`
-			ExtraMounts []struct {
-				HostPath      string `yaml:"hostPath"`
-				ContainerPath string `yaml:"containerPath"`
-			} `yaml:"extraMounts"`
-		}{
+		Networking: Networking{
+			IPFamily: "dual",
+		},
+		Nodes: []Nodes{
 			{
 				Role: "control-plane",
-				ExtraMounts: []struct {
-					HostPath      string `yaml:"hostPath"`
-					ContainerPath string `yaml:"containerPath"`
-				}([]struct {
-					HostPath      string
-					ContainerPath string
-				}{
+				ExtraMounts: []ExtraMounts{
 					{
 						HostPath:      "/var/run/docker.sock",
 						ContainerPath: "/var/run/docker.sock",
 					},
-				}),
+				},
 			},
 		},
 	}

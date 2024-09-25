@@ -13,6 +13,7 @@ var routeMap = map[string]http.HandlerFunc{
 	"/version":     Version,
 	"/kubernetes/": Kubernetes,
 	"/swagger/":    Swagger,
+	"/test":        Test,
 }
 
 // RegisterRoutes registers all routes with the HTTP server
