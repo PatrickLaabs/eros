@@ -1,3 +1,4 @@
+---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: ClusterClass
 metadata:
@@ -39,7 +40,9 @@ spec:
       - op: add
         path: /spec/template/spec/kubeadmConfigSpec/clusterConfiguration/etcd
         valueFrom:
-          template: "  |  \n  local:\n  imageTag: {{ .etcdImageTag }}"
+          template: |
+            local:
+              imageTag: {{ .etcdImageTag }}
       selector:
         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
         kind: KubeadmControlPlaneTemplate
@@ -52,7 +55,8 @@ spec:
       - op: add
         path: /spec/template/spec/kubeadmConfigSpec/clusterConfiguration/dns
         valueFrom:
-          template: "  |  \n  imageTag: {{ .coreDNSImageTag }}"
+          template: |
+            imageTag: {{ .coreDNSImageTag }}
       selector:
         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
         kind: KubeadmControlPlaneTemplate
@@ -65,9 +69,8 @@ spec:
       - op: add
         path: /spec/template/spec/customImage
         valueFrom:
-          template: |2-
-              |
-              kindest/node:{{ .builtin.machineDeployment.version | replace "+" "_" }}
+          template: |
+            kindest/node:{{ .builtin.machineDeployment.version | replace "+" "_" }}
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: DockerMachineTemplate
@@ -79,9 +82,8 @@ spec:
       - op: add
         path: /spec/template/spec/template/customImage
         valueFrom:
-          template: |2-
-              |
-              kindest/node:{{ .builtin.machinePool.version | replace "+" "_" }}
+          template: |
+            kindest/node:{{ .builtin.machinePool.version | replace "+" "_" }}
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: DockerMachinePoolTemplate
@@ -93,9 +95,8 @@ spec:
       - op: add
         path: /spec/template/spec/customImage
         valueFrom:
-          template: |2-
-              |
-              kindest/node:{{ .builtin.controlPlane.version | replace "+" "_" }}
+          template: |
+            kindest/node:{{ .builtin.controlPlane.version | replace "+" "_" }}
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: DockerMachineTemplate
@@ -108,27 +109,40 @@ spec:
     - jsonPatches:
       - op: add
         path: /spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraArgs
-        valueFrom: {}
         value:
           admission-control-config-file: /etc/kubernetes/kube-apiserver-admission-pss.yaml
-          hostPath: ""
-          mountPath: ""
-          name: ""
-          pathType: ""
-          readOnly: false
       - op: add
         path: /spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraVolumes
-        valueFrom: {}
         value:
-          admission-control-config-file: ""
-          hostPath: /etc/kubernetes/kube-apiserver-admission-pss.yaml
+        - hostPath: /etc/kubernetes/kube-apiserver-admission-pss.yaml
           mountPath: /etc/kubernetes/kube-apiserver-admission-pss.yaml
           name: admission-pss
           pathType: File
           readOnly: true
       - op: add
         path: /spec/template/spec/kubeadmConfigSpec/files
-        valueFrom: {}
+        valueFrom:
+          template: |
+            - content: |
+                apiVersion: apiserver.config.k8s.io/v1
+                kind: AdmissionConfiguration
+                plugins:
+                - name: PodSecurity
+                  configuration:
+                    apiVersion: pod-security.admission.config.k8s.io/v1{{ if semverCompare "< v1.25" .builtin.controlPlane.version }}beta1{{ end }}
+                    kind: PodSecurityConfiguration
+                    defaults:
+                      enforce: "{{ .podSecurityStandard.enforce }}"
+                      enforce-version: "latest"
+                      audit: "{{ .podSecurityStandard.audit }}"
+                      audit-version: "latest"
+                      warn: "{{ .podSecurityStandard.warn }}"
+                      warn-version: "latest"
+                    exemptions:
+                      usernames: []
+                      runtimeClasses: []
+                      namespaces: [kube-system]
+              path: /etc/kubernetes/kube-apiserver-admission-pss.yaml
       selector:
         apiVersion: controlplane.cluster.x-k8s.io/v1beta1
         kind: KubeadmControlPlaneTemplate
@@ -138,9 +152,8 @@ spec:
       - op: add
         path: /spec/template/spec/template/customImage
         valueFrom:
-          template: |2-
-              |
-              kindest/node:{{ .builtin.machinePool.version | replace "+" "_" }}
+          template: |
+            kindest/node:{{ .builtin.machinePool.version | replace "+" "_" }}
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: DockerMachinePoolTemplate
@@ -152,16 +165,15 @@ spec:
       - op: add
         path: /spec/template/spec/customImage
         valueFrom:
-          template: |2-
-              |
-              kindest/node:{{ .builtin.controlPlane.version | replace "+" "_" }}
+          template: |
+            kindest/node:{{ .builtin.controlPlane.version | replace "+" "_" }}
       selector:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: DockerMachineTemplate
         matchResources:
           controlPlane: true
     description: Adds an admission configuration for PodSecurity to the kube-apiserver.
-    enabledIf: '''{{ .podSecurityStandard.enabled }}'''
+    enabledIf: '{{ .podSecurityStandard.enabled }}'
     name: podSecurityStandard
   variables:
   - name: imageRepository
@@ -173,23 +185,6 @@ spec:
           If empty, nothing will be set and the from of kubeadm will be used.
         example: registry.k8s.io
         type: string
-        properties:
-          audit:
-            default: ""
-            description: ""
-            type: ""
-          enabled:
-            default: false
-            description: ""
-            type: ""
-          enforce:
-            default: ""
-            description: ""
-            type: ""
-          warn:
-            default: ""
-            description: ""
-            type: ""
   - name: etcdImageTag
     required: true
     schema:
@@ -198,23 +193,6 @@ spec:
         description: etcdImageTag sets the tag for the etcd image.
         example: 3.5.3-0
         type: string
-        properties:
-          audit:
-            default: ""
-            description: ""
-            type: ""
-          enabled:
-            default: false
-            description: ""
-            type: ""
-          enforce:
-            default: ""
-            description: ""
-            type: ""
-          warn:
-            default: ""
-            description: ""
-            type: ""
   - name: coreDNSImageTag
     required: true
     schema:
@@ -223,30 +201,10 @@ spec:
         description: coreDNSImageTag sets the tag for the coreDNS image.
         example: v1.8.5
         type: string
-        properties:
-          audit:
-            default: ""
-            description: ""
-            type: ""
-          enabled:
-            default: false
-            description: ""
-            type: ""
-          enforce:
-            default: ""
-            description: ""
-            type: ""
-          warn:
-            default: ""
-            description: ""
-            type: ""
   - name: podSecurityStandard
     required: false
     schema:
       openAPIV3Schema:
-        default: ""
-        description: ""
-        example: ""
         type: object
         properties:
           audit:

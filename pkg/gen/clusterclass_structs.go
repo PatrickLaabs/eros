@@ -25,22 +25,25 @@ type ControlPlane struct {
 type Infrastructure struct {
 	Ref Ref `yaml:"ref"`
 }
+
+// MixedValue Custom type to handle both single and multiple values
+type MixedValue struct {
+	Single *AdValue // For single-value case
+	Multi  []Value  // For multi-value case
+}
 type ValueFrom struct {
 	Variable string `yaml:"variable,omitempty"`
 	Template string `yaml:"template,omitempty"`
 }
 type JSONPatches struct {
-	Op        string        `yaml:"op"`
-	Path      string        `yaml:"path"`
-	ValueFrom ValueFrom     `yaml:"valueFrom,omitempty"`
-	Value     []interface{} `yaml:"value,omitempty"`
-	AdValue   AdValue       `yaml:"advalue,omitempty"`
+	Op        string     `yaml:"op"`
+	Path      string     `yaml:"path"`
+	ValueFrom ValueFrom  `yaml:"valueFrom,omitempty"`
+	Value     MixedValue `yaml:"value,omitempty"`
 }
-
 type AdValue struct {
 	AdmissionControlConfigFile string `yaml:"admission-control-config-file,omitempty"`
 }
-
 type Value struct {
 	AdmissionControlConfigFile string `yaml:"admission-control-config-file,omitempty"`
 	HostPath                   string `yaml:"hostPath,omitempty"`
@@ -78,12 +81,25 @@ type Patches struct {
 	EnabledIf   string        `yaml:"enabledIf,omitempty"`
 	Name        string        `yaml:"name"`
 }
+
 type OpenAPIV3Schema struct {
 	Default     string     `yaml:"default"`
 	Description string     `yaml:"description,omitempty"`
 	Example     string     `yaml:"example,omitempty"`
 	Type        string     `yaml:"type,omitempty"`
 	Properties  Properties `yaml:"properties,omitempty"`
+}
+
+type OpenAPIV3SchemaNoDefault struct {
+	Description string     `yaml:"description,omitempty"`
+	Example     string     `yaml:"example,omitempty"`
+	Type        string     `yaml:"type,omitempty"`
+	Properties  Properties `yaml:"properties,omitempty"`
+}
+
+type MixedOpenAPIs struct {
+	OpenAPIV3Schema          *OpenAPIV3Schema
+	OpenAPIV3SchemaNoDefault *OpenAPIV3SchemaNoDefault
 }
 
 type Properties struct {
@@ -118,7 +134,7 @@ type Warn struct {
 }
 
 type Schema struct {
-	OpenAPIV3Schema OpenAPIV3Schema `yaml:"openAPIV3Schema,omitempty"`
+	OpenAPIV3Schema MixedOpenAPIs `yaml:"openAPIV3Schema,omitempty"`
 }
 
 type Variables struct {
@@ -151,4 +167,25 @@ type Spec struct {
 	Patches        []Patches      `yaml:"patches,omitempty"`
 	Variables      []Variables    `yaml:"variables,omitempty"`
 	Workers        Workers        `yaml:"workers,omitempty"`
+}
+
+func (mo MixedOpenAPIs) MarshalYAML() (interface{}, error) {
+	if mo.OpenAPIV3Schema != nil {
+		return mo.OpenAPIV3Schema, nil
+	} else if mo.OpenAPIV3SchemaNoDefault != nil {
+		return mo.OpenAPIV3SchemaNoDefault, nil
+	}
+	return nil, nil
+}
+
+// MarshalYAML Custom YAML marshaling function for MixedValue
+func (mv MixedValue) MarshalYAML() (interface{}, error) {
+	if mv.Single != nil {
+		// Marshal as a single object
+		return mv.Single, nil
+	} else if len(mv.Multi) > 0 {
+		// Marshal as an array of objects
+		return mv.Multi, nil
+	}
+	return nil, nil
 }

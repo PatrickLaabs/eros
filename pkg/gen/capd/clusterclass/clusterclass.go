@@ -2,7 +2,7 @@ package clusterclass
 
 import (
 	"github.com/PatrickLaabs/eros/pkg/gen"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"log"
 	"os"
 )
@@ -173,28 +173,24 @@ func CapdLocal() {
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraArgs",
-								//Value: gen.Value{
-								//	AdmissionControlConfigFile: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
-								//},
-								AdValue: gen.AdValue{AdmissionControlConfigFile: "/etc/kubernetes/kube-apiserver-admission-pss.yaml"},
+								Value: gen.MixedValue{
+									Single: &gen.AdValue{
+										AdmissionControlConfigFile: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
+									},
+								},
 							},
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraVolumes",
-								//Value: gen.Value{
-								//	HostPath:  "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
-								//	MountPath: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
-								//	Name:      "admission-pss",
-								//	PathType:  "File",
-								//	ReadOnly:  true,
-								//},
-								Value: []any{
-									gen.Value{
-										HostPath:  "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
-										MountPath: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
-										Name:      "admission-pss",
-										PathType:  "File",
-										ReadOnly:  true,
+								Value: gen.MixedValue{
+									Multi: []gen.Value{
+										{
+											HostPath:  "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
+											MountPath: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
+											Name:      "admission-pss",
+											PathType:  "File",
+											ReadOnly:  true,
+										},
 									},
 								},
 							},
@@ -202,49 +198,33 @@ func CapdLocal() {
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/files",
 								ValueFrom: gen.ValueFrom{
-									Template: "TODO!",
+									Template: `- content: |
+    apiVersion: apiserver.config.k8s.io/v1
+    kind: AdmissionConfiguration
+    plugins:
+    - name: PodSecurity
+      configuration:
+        apiVersion: pod-security.admission.config.k8s.io/v1{{ if semverCompare "< v1.25" .builtin.controlPlane.version }}beta1{{ end }}
+        kind: PodSecurityConfiguration
+        defaults:
+          enforce: "{{ .podSecurityStandard.enforce }}"
+          enforce-version: "latest"
+          audit: "{{ .podSecurityStandard.audit }}"
+          audit-version: "latest"
+          warn: "{{ .podSecurityStandard.warn }}"
+          warn-version: "latest"
+        exemptions:
+          usernames: []
+          runtimeClasses: []
+          namespaces: [kube-system]
+  path: /etc/kubernetes/kube-apiserver-admission-pss.yaml
+`,
 								},
 							},
 						},
 							Selector: gen.Selector{
 								APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 								Kind:       "KubeadmControlPlaneTemplate",
-								MatchResources: gen.MatchResources{
-									ControlPlane: true,
-								},
-							},
-						},
-						{JSONPatches: []gen.JSONPatches{
-							{
-								Op:   "add",
-								Path: "/spec/template/spec/template/customImage",
-								ValueFrom: gen.ValueFrom{
-									Template: " kindest/node:{{ .builtin.machinePool.version | replace \"+\" \"_\" }}\n",
-								},
-							},
-						},
-							Selector: gen.Selector{
-								APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
-								Kind:       "DockerMachinePoolTemplate",
-								MatchResources: gen.MatchResources{
-									MachinePoolClass: gen.MachinePoolClass{Names: []string{
-										"default-worker",
-									}},
-								},
-							},
-						},
-						{JSONPatches: []gen.JSONPatches{
-							{
-								Op:   "add",
-								Path: "/spec/template/spec/customImage",
-								ValueFrom: gen.ValueFrom{
-									Template: "kindest/node:{{ .builtin.controlPlane.version | replace \"+\" \"_\" }}\n",
-								},
-							},
-						},
-							Selector: gen.Selector{
-								APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
-								Kind:       "DockerMachineTemplate",
 								MatchResources: gen.MatchResources{
 									ControlPlane: true,
 								},
@@ -261,11 +241,13 @@ func CapdLocal() {
 					Name:     "imageRepository",
 					Required: true,
 					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.OpenAPIV3Schema{
-							Default:     "",
-							Description: "imageRepository sets the container registry to pull images from. If empty, nothing will be set and the from of kubeadm will be used.",
-							Example:     "registry.k8s.io",
-							Type:        "string",
+						OpenAPIV3Schema: gen.MixedOpenAPIs{
+							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+								Default:     "",
+								Description: "imageRepository sets the container registry to pull images from. If empty, nothing will be set and the from of kubeadm will be used.",
+								Example:     "registry.k8s.io",
+								Type:        "string",
+							},
 						},
 					},
 				},
@@ -273,11 +255,13 @@ func CapdLocal() {
 					Name:     "etcdImageTag",
 					Required: true,
 					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.OpenAPIV3Schema{
-							Default:     "",
-							Description: "etcdImageTag sets the tag for the etcd image.",
-							Example:     "3.5.3-0",
-							Type:        "string",
+						OpenAPIV3Schema: gen.MixedOpenAPIs{
+							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+								Default:     "",
+								Description: "etcdImageTag sets the tag for the etcd image.",
+								Example:     "3.5.3-0",
+								Type:        "string",
+							},
 						},
 					},
 				},
@@ -285,11 +269,13 @@ func CapdLocal() {
 					Name:     "coreDNSImageTag",
 					Required: true,
 					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.OpenAPIV3Schema{
-							Default:     "",
-							Description: "coreDNSImageTag sets the tag for the coreDNS image.",
-							Example:     "v1.8.5",
-							Type:        "string",
+						OpenAPIV3Schema: gen.MixedOpenAPIs{
+							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+								Default:     "",
+								Description: "coreDNSImageTag sets the tag for the coreDNS image.",
+								Example:     "v1.8.5",
+								Type:        "string",
+							},
 						},
 					},
 				},
@@ -297,30 +283,32 @@ func CapdLocal() {
 					Name:     "podSecurityStandard",
 					Required: false,
 					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.OpenAPIV3Schema{
-							Properties: gen.Properties{
-								Audit: gen.Audit{
-									Default:     "restricted",
-									Description: "audit sets the level for the audit PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
-									Type:        "string",
+						OpenAPIV3Schema: gen.MixedOpenAPIs{
+							OpenAPIV3SchemaNoDefault: &gen.OpenAPIV3SchemaNoDefault{
+								Properties: gen.Properties{
+									Audit: gen.Audit{
+										Default:     "restricted",
+										Description: "audit sets the level for the audit PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
+										Type:        "string",
+									},
+									Enabled: gen.Enabled{
+										Default:     true,
+										Description: "enabled enables the patches to enable Pod Security Standard via AdmissionConfiguration.",
+										Type:        "boolean",
+									},
+									Enforce: gen.Enforce{
+										Default:     "baseline",
+										Description: "enforce sets the level for the enforce PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
+										Type:        "string",
+									},
+									Warn: gen.Warn{
+										Default:     "restricted",
+										Description: "warn sets the level for the warn PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
+										Type:        "string",
+									},
 								},
-								Enabled: gen.Enabled{
-									Default:     true,
-									Description: "enabled enables the patches to enable Pod Security Standard via AdmissionConfiguration.",
-									Type:        "boolean",
-								},
-								Enforce: gen.Enforce{
-									Default:     "baseline",
-									Description: "enforce sets the level for the enforce PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
-									Type:        "string",
-								},
-								Warn: gen.Warn{
-									Default:     "restricted",
-									Description: "warn sets the level for the warn PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
-									Type:        "string",
-								},
+								Type: "object",
 							},
-							Type: "object",
 						},
 					},
 				},

@@ -2,7 +2,7 @@ package clusterclass
 
 import (
 	"github.com/google/go-cmp/cmp"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"os"
 	"path/filepath"
 	"testing"
