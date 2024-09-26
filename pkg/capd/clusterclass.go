@@ -1,58 +1,57 @@
-package clusterclass
+package capd
 
 import (
-	"github.com/PatrickLaabs/eros/pkg/gen"
+	"github.com/PatrickLaabs/eros/structs/clusterclass"
 	"gopkg.in/yaml.v2"
 	"log"
-	"os"
 )
 
-func CapdLocal() {
-	data := &gen.ClusterClass{
+func ClusterClass() (yamlData []byte) {
+	data := &clusterclass.ClusterClass{
 		APIVersion: "cluster.x-k8s.io/v1beta1",
 		Kind:       "ClusterClass",
-		Metadata: gen.Metadata{
+		Metadata: clusterclass.Metadata{
 			Name:      "quick-start",
 			Namespace: "default",
 		},
-		Spec: gen.Spec{
-			ControlPlane: gen.ControlPlane{
-				MachineInfrastructure: gen.MachineInfrastructure{
-					Ref: gen.Ref{
+		Spec: clusterclass.Spec{
+			ControlPlane: clusterclass.ControlPlane{
+				MachineInfrastructure: clusterclass.MachineInfrastructure{
+					Ref: clusterclass.Ref{
 						APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 						Kind:       "DockerMachineTemplate",
 						Name:       "quick-start-control-plane",
 					},
 				},
-				Ref: gen.Ref{
+				Ref: clusterclass.Ref{
 					APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 					Kind:       "KubeadmControlPlaneTemplate",
 					Name:       "quick-start-control-plane",
 				},
 			},
-			Infrastructure: gen.Infrastructure{
-				Ref: gen.Ref{
+			Infrastructure: clusterclass.Infrastructure{
+				Ref: clusterclass.Ref{
 					APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 					Kind:       "DockerClusterTemplate",
 					Name:       "quick-start-cluster",
 				},
 			},
-			Patches: []gen.Patches{
+			Patches: []clusterclass.Patches{
 				{
-					Definitions: []gen.Definitions{
-						{JSONPatches: []gen.JSONPatches{
+					Definitions: []clusterclass.Definitions{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/imageRepository",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Variable: "imageRepository",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 								Kind:       "KubeadmControlPlaneTemplate",
-								MatchResources: gen.MatchResources{
+								MatchResources: clusterclass.MatchResources{
 									ControlPlane: true,
 								},
 							}},
@@ -62,20 +61,20 @@ func CapdLocal() {
 					Name:        "imageRepository",
 				},
 				{
-					Definitions: []gen.Definitions{
-						{JSONPatches: []gen.JSONPatches{
+					Definitions: []clusterclass.Definitions{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/etcd",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: "local:\n  imageTag: {{ .etcdImageTag }}\n",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 								Kind:       "KubeadmControlPlaneTemplate",
-								MatchResources: gen.MatchResources{
+								MatchResources: clusterclass.MatchResources{
 									ControlPlane: true,
 								},
 							}},
@@ -84,20 +83,20 @@ func CapdLocal() {
 					Name:        "etcdImageTag",
 				},
 				{
-					Definitions: []gen.Definitions{
-						{JSONPatches: []gen.JSONPatches{
+					Definitions: []clusterclass.Definitions{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/dns",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: "imageTag: {{ .coreDNSImageTag }}\n",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 								Kind:       "KubeadmControlPlaneTemplate",
-								MatchResources: gen.MatchResources{
+								MatchResources: clusterclass.MatchResources{
 									ControlPlane: true,
 								},
 							},
@@ -107,58 +106,58 @@ func CapdLocal() {
 					Name:        "coreDNSImageTag",
 				},
 				{
-					Definitions: []gen.Definitions{
-						{JSONPatches: []gen.JSONPatches{
+					Definitions: []clusterclass.Definitions{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/customImage",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: "kindest/node:{{ .builtin.machineDeployment.version | replace \"+\" \"_\" }}\n",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 								Kind:       "DockerMachineTemplate",
-								MatchResources: gen.MatchResources{
-									MachineDeploymentClass: gen.MachineDeploymentClass{Names: []string{
+								MatchResources: clusterclass.MatchResources{
+									MachineDeploymentClass: clusterclass.MachineDeploymentClass{Names: []string{
 										"default-worker",
 									}},
 								},
 							},
 						},
-						{JSONPatches: []gen.JSONPatches{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/template/customImage",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: "kindest/node:{{ .builtin.machinePool.version | replace \"+\" \"_\" }}\n",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 								Kind:       "DockerMachinePoolTemplate",
-								MatchResources: gen.MatchResources{
-									MachinePoolClass: gen.MachinePoolClass{Names: []string{
+								MatchResources: clusterclass.MatchResources{
+									MachinePoolClass: clusterclass.MachinePoolClass{Names: []string{
 										"default-worker",
 									}},
 								},
 							},
 						},
-						{JSONPatches: []gen.JSONPatches{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/customImage",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: "kindest/node:{{ .builtin.controlPlane.version | replace \"+\" \"_\" }}\n",
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 								Kind:       "DockerMachineTemplate",
-								MatchResources: gen.MatchResources{
+								MatchResources: clusterclass.MatchResources{
 									ControlPlane: true,
 								},
 							},
@@ -168,13 +167,13 @@ func CapdLocal() {
 					Name:        "customImage",
 				},
 				{
-					Definitions: []gen.Definitions{
-						{JSONPatches: []gen.JSONPatches{
+					Definitions: []clusterclass.Definitions{
+						{JSONPatches: []clusterclass.JSONPatches{
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraArgs",
-								Value: gen.MixedValue{
-									Single: &gen.AdValue{
+								Value: clusterclass.MixedValue{
+									Single: &clusterclass.AdValue{
 										AdmissionControlConfigFile: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
 									},
 								},
@@ -182,8 +181,8 @@ func CapdLocal() {
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/clusterConfiguration/apiServer/extraVolumes",
-								Value: gen.MixedValue{
-									Multi: []gen.Value{
+								Value: clusterclass.MixedValue{
+									Multi: []clusterclass.Value{
 										{
 											HostPath:  "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
 											MountPath: "/etc/kubernetes/kube-apiserver-admission-pss.yaml",
@@ -197,7 +196,7 @@ func CapdLocal() {
 							{
 								Op:   "add",
 								Path: "/spec/template/spec/kubeadmConfigSpec/files",
-								ValueFrom: gen.ValueFrom{
+								ValueFrom: clusterclass.ValueFrom{
 									Template: `- content: |
     apiVersion: apiserver.config.k8s.io/v1
     kind: AdmissionConfiguration
@@ -222,10 +221,10 @@ func CapdLocal() {
 								},
 							},
 						},
-							Selector: gen.Selector{
+							Selector: clusterclass.Selector{
 								APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 								Kind:       "KubeadmControlPlaneTemplate",
-								MatchResources: gen.MatchResources{
+								MatchResources: clusterclass.MatchResources{
 									ControlPlane: true,
 								},
 							},
@@ -236,13 +235,13 @@ func CapdLocal() {
 					Name:        "podSecurityStandard",
 				},
 			},
-			Variables: []gen.Variables{
+			Variables: []clusterclass.Variables{
 				{
 					Name:     "imageRepository",
 					Required: true,
-					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.MixedOpenAPIs{
-							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+					Schema: clusterclass.Schema{
+						OpenAPIV3Schema: clusterclass.MixedOpenAPIs{
+							OpenAPIV3Schema: &clusterclass.OpenAPIV3Schema{
 								Default:     "",
 								Description: "imageRepository sets the container registry to pull images from. If empty, nothing will be set and the from of kubeadm will be used.",
 								Example:     "registry.k8s.io",
@@ -254,9 +253,9 @@ func CapdLocal() {
 				{
 					Name:     "etcdImageTag",
 					Required: true,
-					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.MixedOpenAPIs{
-							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+					Schema: clusterclass.Schema{
+						OpenAPIV3Schema: clusterclass.MixedOpenAPIs{
+							OpenAPIV3Schema: &clusterclass.OpenAPIV3Schema{
 								Default:     "",
 								Description: "etcdImageTag sets the tag for the etcd image.",
 								Example:     "3.5.3-0",
@@ -268,9 +267,9 @@ func CapdLocal() {
 				{
 					Name:     "coreDNSImageTag",
 					Required: true,
-					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.MixedOpenAPIs{
-							OpenAPIV3Schema: &gen.OpenAPIV3Schema{
+					Schema: clusterclass.Schema{
+						OpenAPIV3Schema: clusterclass.MixedOpenAPIs{
+							OpenAPIV3Schema: &clusterclass.OpenAPIV3Schema{
 								Default:     "",
 								Description: "coreDNSImageTag sets the tag for the coreDNS image.",
 								Example:     "v1.8.5",
@@ -282,26 +281,26 @@ func CapdLocal() {
 				{
 					Name:     "podSecurityStandard",
 					Required: false,
-					Schema: gen.Schema{
-						OpenAPIV3Schema: gen.MixedOpenAPIs{
-							OpenAPIV3SchemaNoDefault: &gen.OpenAPIV3SchemaNoDefault{
-								Properties: gen.Properties{
-									Audit: gen.Audit{
+					Schema: clusterclass.Schema{
+						OpenAPIV3Schema: clusterclass.MixedOpenAPIs{
+							OpenAPIV3SchemaNoDefault: &clusterclass.OpenAPIV3SchemaNoDefault{
+								Properties: clusterclass.Properties{
+									Audit: clusterclass.Audit{
 										Default:     "restricted",
 										Description: "audit sets the level for the audit PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
 										Type:        "string",
 									},
-									Enabled: gen.Enabled{
+									Enabled: clusterclass.Enabled{
 										Default:     true,
 										Description: "enabled enables the patches to enable Pod Security Standard via AdmissionConfiguration.",
 										Type:        "boolean",
 									},
-									Enforce: gen.Enforce{
+									Enforce: clusterclass.Enforce{
 										Default:     "baseline",
 										Description: "enforce sets the level for the enforce PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
 										Type:        "string",
 									},
-									Warn: gen.Warn{
+									Warn: clusterclass.Warn{
 										Default:     "restricted",
 										Description: "warn sets the level for the warn PodSecurityConfiguration mode. One of privileged, baseline, restricted.",
 										Type:        "string",
@@ -313,20 +312,20 @@ func CapdLocal() {
 					},
 				},
 			},
-			Workers: gen.Workers{
-				MachineDeployments: []gen.MachineDeployments{
+			Workers: clusterclass.Workers{
+				MachineDeployments: []clusterclass.MachineDeployments{
 					{
 						Class: "default-worker",
-						Template: gen.Template{
-							Bootstrap: gen.Bootstrap{
-								Ref: gen.Ref{
+						Template: clusterclass.Template{
+							Bootstrap: clusterclass.Bootstrap{
+								Ref: clusterclass.Ref{
 									APIVersion: "bootstrap.cluster.x-k8s.io/v1beta1",
 									Kind:       "KubeadmConfigTemplate",
 									Name:       "quick-start-default-worker-bootstraptemplate",
 								},
 							},
-							Infrastructure: gen.Infrastructure{
-								Ref: gen.Ref{
+							Infrastructure: clusterclass.Infrastructure{
+								Ref: clusterclass.Ref{
 									APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 									Kind:       "DockerMachineTemplate",
 									Name:       "quick-start-default-worker-machinetemplate",
@@ -335,19 +334,19 @@ func CapdLocal() {
 						},
 					},
 				},
-				MachinePools: []gen.MachinePools{
+				MachinePools: []clusterclass.MachinePools{
 					{
 						Class: "default-worker",
-						Template: gen.Template{
-							Bootstrap: gen.Bootstrap{
-								Ref: gen.Ref{
+						Template: clusterclass.Template{
+							Bootstrap: clusterclass.Bootstrap{
+								Ref: clusterclass.Ref{
 									APIVersion: "bootstrap.cluster.x-k8s.io/v1beta1",
 									Kind:       "KubeadmConfigTemplate",
 									Name:       "quick-start-default-worker-bootstraptemplate",
 								},
 							},
-							Infrastructure: gen.Infrastructure{
-								Ref: gen.Ref{
+							Infrastructure: clusterclass.Infrastructure{
+								Ref: clusterclass.Ref{
 									APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 									Kind:       "DockerMachinePoolTemplate",
 									Name:       "quick-start-default-worker-machinepooltemplate",
@@ -365,8 +364,5 @@ func CapdLocal() {
 		log.Fatalf("error mashaling data %v", err)
 	}
 
-	err = os.WriteFile("genYaml.yaml", yamlData, 0644)
-	if err != nil {
-		log.Fatalf("error writing file %v", err)
-	}
+	return yamlData
 }

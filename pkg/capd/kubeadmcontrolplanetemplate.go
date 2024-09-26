@@ -1,13 +1,12 @@
-package gen
+package capd
 
 import (
-	k "github.com/PatrickLaabs/eros/pkg/KubeadmControlPlaneTemplate"
+	k "github.com/PatrickLaabs/eros/structs/kubeadmcontrolplanetemplate"
 	"gopkg.in/yaml.v2"
 	"log"
-	"os"
 )
 
-func KubeadmControlPlaneTemplate() {
+func KubeadmControlPlaneTemplate() (yamlData []byte) {
 	data := &k.KubeadmControlPlaneTemplate{
 		APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
 		Kind:       "KubeadmControlPlaneTemplate",
@@ -52,8 +51,5 @@ func KubeadmControlPlaneTemplate() {
 		log.Fatalf("error mashaling data %v", err)
 	}
 
-	err = os.WriteFile("KubeadmControlPlaneTemplate.yaml", yamlData, 0644)
-	if err != nil {
-		log.Fatalf("error writing file %v", err)
-	}
+	return yamlData
 }

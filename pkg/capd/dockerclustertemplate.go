@@ -1,13 +1,12 @@
-package gen
+package capd
 
 import (
-	"github.com/PatrickLaabs/eros/pkg/dockerclustertemplate"
-	"gopkg.in/yaml.v3"
+	"github.com/PatrickLaabs/eros/structs/dockerclustertemplate"
+	"gopkg.in/yaml.v2"
 	"log"
-	"os"
 )
 
-func DockerClusterTemplate() {
+func DockerClusterTemplate() (yamlData []byte) {
 	data := &dockerclustertemplate.DockerClusterTemplate{
 		APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 		Kind:       "DockerClusterTemplate",
@@ -27,8 +26,5 @@ func DockerClusterTemplate() {
 		log.Fatalf("error mashaling data %v", err)
 	}
 
-	err = os.WriteFile("dockerclustertemplate.yaml", yamlData, 0644)
-	if err != nil {
-		log.Fatalf("error writing file %v", err)
-	}
+	return yamlData
 }

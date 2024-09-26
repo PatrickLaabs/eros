@@ -1,4 +1,4 @@
-package gen
+package clusterclass
 
 type ClusterClass struct {
 	APIVersion string   `yaml:"apiVersion"`
