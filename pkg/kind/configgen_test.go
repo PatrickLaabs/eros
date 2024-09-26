@@ -2,7 +2,7 @@ package kind
 
 import (
 	"github.com/stretchr/testify/assert"
-	"gopkg.in/yaml.v3"
+	"gopkg.in/yaml.v2"
 	"strings"
 	"testing"
 )

@@ -2,11 +2,11 @@
 Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 */
 
-package frontend
+package main
 
 import (
 	"flag"
-	"github.com/PatrickLaabs/eros/frontend/views"
+	"github.com/PatrickLaabs/eros/views"
 	"github.com/a-h/templ"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
@@ -24,7 +24,7 @@ var (
 	frontendAddr = flag.String("frontendAddr", ":8080", "address to server")
 )
 
-func Start() {
+func main() {
 	fs := http.FileServer(http.Dir("./assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 	http.Handle("/", templ.Handler(views.LandingPage()))
