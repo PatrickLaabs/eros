@@ -26,3 +26,7 @@ You can access the documentation with:
 ```shell
 http://localhost:3000/swagger/index.html
 ```
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=PatrickLaabs/eros&type=Date)](https://star-history.com/#PatrickLaabs/eros&Date)
