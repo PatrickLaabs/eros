@@ -42,3 +42,13 @@ gen:
 swagger:
     @echo "Generating API documentation..."
     swag init -g ./api/start.go -o ./docs
+
+build: server frontend
+
+server:
+    @echo "Building API Server Binary..."
+    {{GO_CMD}} build ./cmd/api-server/api-server.go
+
+frontend:
+    @echo "Building Frontend Server Binary..."
+    {{GO_CMD}} build ./cmd/frontend-server/frontend-server.go

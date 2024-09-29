@@ -6,16 +6,30 @@
 * Just
 
 ## Get started
+
+### Build from Source
+
+Using just to build the binaries:
+```shell
+just build
+```
+
+### Running the Apps
 Start the API Backend:
 ```shell
-eros server start
+go run ./cmd/api-server/api-server.go
+
+or:
+./api-server
 ```
 
 Start the Frontend Server:
 ```shell
-eros frontend start
-```
+go run ./cmd/frontend-server/frontend-server.go
 
+or:
+./frontend-server
+```
 You can now either open up the frontend application via `http://localhost:8080`
 or do direct queries against the api, like ` curl localhost:3000/kubernetes/local/create`.
 
