@@ -1,8 +1,10 @@
 package main
 
 import (
-	dct "github.com/PatrickLaabs/eros/structs/dockerclustertemplate"
+	d "github.com/PatrickLaabs/eros/structs/dockerclustertemplate"
+	"gopkg.in/yaml.v2"
 	"log"
+	"os"
 )
 
 /*
@@ -13,8 +15,13 @@ func main() {
 	namespace := "default"
 	clustername := "eros-mgmt-cluster"
 
-	_, err := dct.Render(&dct.DockerClusterTemplate{}, clustername, namespace)
+	templaterFunc := d.TemplaterFunc(d.NewClusterTemplate)
+
+	data := templaterFunc.DockerClusterTemplate(clustername, namespace)
+	yamlData, err := yaml.Marshal(data)
 	if err != nil {
-		log.Printf("Error rendering template: %v", err)
+		log.Printf("yaml.Marshal err %v", err)
 	}
+
+	err = os.WriteFile("test.yaml", yamlData, 0644)
 }

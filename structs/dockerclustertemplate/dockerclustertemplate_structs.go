@@ -4,12 +4,6 @@ Copyright © 2024 Patrick Laabs patrick.laabs@me.com
 
 package dockerclustertemplate
 
-import (
-	"gopkg.in/yaml.v2"
-	"log"
-	"os"
-)
-
 type DockerClusterTemplate struct {
 	APIVersion string   `yaml:"apiVersion"`
 	Kind       string   `yaml:"kind"`
@@ -31,11 +25,17 @@ type Template struct {
 }
 
 type Templater interface {
-	Dct(clustername string, namespace string) *DockerClusterTemplate
+	DockerClusterTemplate(clustername string, namespace string) *DockerClusterTemplate
 }
 
-func (d *DockerClusterTemplate) Dct(clustername string, namespace string) *DockerClusterTemplate {
-	data := &DockerClusterTemplate{
+type TemplaterFunc func(clustername string, namespace string) *DockerClusterTemplate
+
+func (t TemplaterFunc) DockerClusterTemplate(clustername string, namespace string) *DockerClusterTemplate {
+	return t(clustername, namespace)
+}
+
+func NewClusterTemplate(clustername string, namespace string) *DockerClusterTemplate {
+	return &DockerClusterTemplate{
 		APIVersion: "infrastructure.cluster.x-k8s.io/v1beta1",
 		Kind:       "DockerClusterTemplate",
 		Metadata: Metadata{
@@ -48,20 +48,4 @@ func (d *DockerClusterTemplate) Dct(clustername string, namespace string) *Docke
 			},
 		},
 	}
-	return data
-}
-
-func Render(t Templater, clustername string, namespace string) ([]byte, error) {
-	ns := t.Dct(clustername, namespace)
-	yamlData, err := yaml.Marshal(ns)
-	if err != nil {
-		log.Fatalf("error mashaling data %v", err)
-	}
-
-	err = os.WriteFile("test.yaml", yamlData, 0644)
-	if err != nil {
-		return nil, nil
-	}
-
-	return yamlData, nil
 }
