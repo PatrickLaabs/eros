@@ -12,10 +12,8 @@ import (
 )
 
 // Start starts the erosDB binary after successfully getting it
-func Start() (err error) {
-	version := "0.0.12"
-	
-	err = get(version)
+func Start(erosDbVersion string) (err error) {
+	err = get(erosDbVersion)
 	if err != nil {
 		log.Printf("error getting erosDB binary %s", err)
 		return err
@@ -27,12 +25,12 @@ func Start() (err error) {
 		return err
 	}
 
-	path := filepath.Join(homeDir, ".eros/erosDB-macos-latest/erosDB-macos-latest")
+	path := filepath.Join(homeDir, ".eros/erosDB-macos-latest-"+erosDbVersion+"/erosDB-macos-latest-"+erosDbVersion)
 	cmd := exec.Command(path)
 
 	err = cmd.Run()
 	if err != nil {
-		log.Printf("Error starting erosDB-macos-latest: %s", err)
+		log.Printf("Error starting erosDB-macos-latest %s: %s", erosDbVersion, err)
 		return err
 	}
 

@@ -18,10 +18,12 @@ var (
 )
 
 func main() {
+	erosDbVersion := "0.1.0"
+
 	// starting erosDB in a goroutine along-side API server
 	go func() {
 		log.Printf("Starting erosDB on Port :3001")
-		err := erosdb.Start()
+		err := erosdb.Start(erosDbVersion)
 		if err != nil {
 			log.Printf("Error starting erosdb: %v", err)
 		}

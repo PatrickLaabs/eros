@@ -12,33 +12,39 @@ import (
 	"runtime"
 )
 
-func get(version string) (err error) {
+func get(erosDbVersion string) (err error) {
 	var operatingSystem string
 
+	// Checking OS
 	if runtime.GOOS == "darwin" {
 		operatingSystem = "macos"
-		// https://github.com/PatrickLaabs/erosDB/releases/download/0.0.11/erosDB-macos-latest
 	} else if runtime.GOOS == "linux" {
 		operatingSystem = "ubuntu"
-		// https://github.com/PatrickLaabs/erosDB/releases/download/0.0.11/erosDB-ubuntu-latest
 	}
 
+	// Retrieves Users home directory
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
 		log.Printf("cannot read users homedir: %s\n", err)
 		return err
 	}
 
-	if _, err = os.Stat(filepath.Join(homeDir, ".eros/erosDB-"+operatingSystem+"-latest")); err != nil {
+	if _, err = os.Stat(filepath.Join(homeDir, ".eros/erosDB-"+operatingSystem+"-latest-"+erosDbVersion)); err != nil {
 		if os.IsNotExist(err) {
-			log.Printf("no erosDB-macos-latest found\n")
+			//Todo
+			log.Printf("no erosDB-%s-latest-%s found: %s\n", operatingSystem, erosDbVersion, err)
 
-			src := "https://github.com/PatrickLaabs/erosDB/releases/download/" + version + "/erosDB-" + operatingSystem + "-latest"
-			dst := filepath.Join(homeDir, ".eros/erosDB-macos-latest")
+			src := "https://github.com/PatrickLaabs/erosDB/releases/download/" + erosDbVersion + "/erosDB-" + operatingSystem + "-latest-" + erosDbVersion
+			dst := filepath.Join(homeDir, ".eros/erosDB-"+operatingSystem+"-latest-"+erosDbVersion)
 
 			if err = getter.GetAny(dst, src); err != nil {
-				log.Printf("cannot download erosDB-macos-latest: %s\n", err)
+				log.Printf("cannot download erosDB-%s-latest-%s: %s\n", operatingSystem, erosDbVersion, err)
 				return err
+			}
+
+			binPath := filepath.Join(dst, "/erosDB-"+operatingSystem+"-latest-"+erosDbVersion)
+			if err = os.Chmod(binPath, 0755); err != nil {
+				log.Printf("cannot chmod %s: %s\n", dst, err)
 			}
 		}
 		return err
