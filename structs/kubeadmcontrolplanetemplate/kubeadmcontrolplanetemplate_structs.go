@@ -44,7 +44,11 @@ type APIServer struct {
 }
 
 type ControllerManager struct {
-	ExtraArgs map[string]string `yaml:"extraArgs"`
+	ExtraArgs EnablHostPathProvisioner `yaml:"extraArgs"`
+}
+
+type EnablHostPathProvisioner struct {
+	EnableHostPathProvisioner string `yaml:"enable-hostpath-provisioner"`
 }
 
 type InitConfiguration struct {
@@ -53,4 +57,54 @@ type InitConfiguration struct {
 
 type JoinConfiguration struct {
 	NodeRegistration map[string]interface{} `yaml:"nodeRegistration"`
+}
+
+type Templater interface {
+	KubeadmControlPlaneTemplate(clustername string, namespace string) *KubeadmControlPlaneTemplate
+}
+
+type TemplaterFunc func(clustername string, namespace string) *KubeadmControlPlaneTemplate
+
+func (t TemplaterFunc) KubeadmControlPlaneTemplate(clustername string, namespace string) *KubeadmControlPlaneTemplate {
+	return t(clustername, namespace)
+}
+
+func NewKubeadmControlPlaneTemplate(clustername string, namespace string) *KubeadmControlPlaneTemplate {
+	return &KubeadmControlPlaneTemplate{
+		APIVersion: "controlplane.cluster.x-k8s.io/v1beta1",
+		Kind:       "KubeadmControlPlaneTemplate",
+		Metadata: Metadata{
+			Name:      clustername,
+			Namespace: namespace,
+		},
+		Spec: Spec{
+			Template: ControlPlaneTemplate{
+				ControlPlaneSpec{
+					KubeadmConfigSpec: KubeadmConfigSpec{
+						ClusterConfiguration: ClusterConfiguration{
+							APIServer: APIServer{
+								CertSANs: []string{
+									"localhost",
+									"127.0.0.1",
+									"0.0.0.0",
+									"host.docker.internal",
+								},
+							},
+							ControllerManager: ControllerManager{
+								ExtraArgs: EnablHostPathProvisioner{
+									EnableHostPathProvisioner: "true",
+								},
+							},
+						},
+						InitConfiguration: InitConfiguration{
+							NodeRegistration: map[string]interface{}{},
+						},
+						JoinConfiguration: JoinConfiguration{
+							NodeRegistration: map[string]interface{}{},
+						},
+					},
+				},
+			},
+		},
+	}
 }

@@ -14,12 +14,11 @@ import (
 func DockerClusterTemplate(clustername string, namespace string) (err error) {
 	templaterFunc := d.TemplaterFunc(d.NewClusterTemplate)
 	data := templaterFunc.DockerClusterTemplate(clustername, namespace)
-
 	yamlData, err := yaml.Marshal(data)
 	if err != nil {
 		log.Printf("error marshalling template data: %v", err)
 	}
 
-	err = os.WriteFile("test.yaml", yamlData, 0644)
+	err = os.WriteFile("dockerclustertemplate.yaml", yamlData, 0644)
 	return err
 }
